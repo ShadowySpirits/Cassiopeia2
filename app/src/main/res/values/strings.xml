@@ -1,0 +1,77 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
+    <string name="app_name">番組Collection</string>
+    <string name="space" translatable="false"> </string>
+    <string name="title_activity_home" translatable="false">HomeActivity</string>
+
+    <string name="first_config_description">Start by logging in with your 番組Collection account.</string>
+    <string name="first_config_username">Username</string>
+    <string name="first_config_password">Password</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="title_favorite">Collection</string>
+    <string name="title_bangumi">Bangumi</string>
+
+    <string name="empty">No content</string>
+
+    <string-array name="array_favorite">
+        <item>ALL</item>
+        <item>Wish to watch</item>
+        <item>Watched</item>
+        <item>Watching</item>
+        <item>Paused watch</item>
+        <item>Abandoned</item>
+    </string-array>
+
+    <string-array name="array_bangumi_type">
+        <item>All</item>
+        <item>SUB</item>
+        <item>RAW</item>
+    </string-array>
+
+    <string-array name="array_link_type" translatable="false">
+        <item>http://</item>
+        <item>https://</item>
+    </string-array>
+
+    <string name="title_activity_player" translatable="false">PlayerActivity</string>
+    <string name="title_activity_settings" translatable="false">Settings</string>
+
+    <string name="update_info">%d eps  ·  %s  ·  %s</string>
+    <string name="unwatched">%d new</string>
+    <string name="eps_all">%d eps</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="others">others</string>
+    <string name="logout">Logout</string>
+    <string name="recommended">Recommended</string>
+    <string name="releasing">Releasing</string>
+    <string name="my_collection">My Collection</string>
+    <string name="all_bangumi">All Bangumi</string>
+    <string name="mark_as_watched">Mark as watched</string>
+    <string name="mark_all_before_as_watched">Mark all before as watched</string>
+    <string name="open_with_external_player">Open with external player</string>
+    <string name="download">Download</string>
+    <string name="delete">Delete</string>
+    <string name="delete_success">Delete Success</string>
+    <string name="delete_failed">Delete Failed</string>
+
+    <string name="bangumi_type_cn">"  SUB  "</string>
+    <string name="bangumi_type_raw">"  RAW  "</string>
+    <string name="on_air">onAir</string>
+    <string name="finished">Finished</string>
+
+    <string name="toast_forward" translatable="false">+%ds</string>
+    <string name="toast_backward" translatable="false">-%ds</string>
+
+    <string name="connecting">Connecting…</string>
+    <string name="network_error">Network Error</string>
+    <string name="loading">Loading…</string>
+    <string name="searching">Searching…</string>
+    <string name="collect">Collect</string>
+    <string name="delete_collection">Delete Collection</string>
+</resources>

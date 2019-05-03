@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="co.bangumi.cassiopeia.viewmodel.LoginViewModel" />
+
+        <variable
+            name="presenter"
+            type="co.bangumi.framework.base.BasePresenter" />
+    </data>
+
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:text="@string/app_name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="30sp" />
+
+            <!--
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="6dp"
+                android:paddingTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <EditText
+                        android:id="@+id/server"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="Host"
+                        android:inputType="textUri"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="24dp"
+                android:text="@string/first_config_description"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/user"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/first_config_username"
+                        android:inputType="text"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:text="@={vm.user}" />
+
+                    <EditText
+                        android:id="@+id/pw"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/first_config_password"
+                        android:inputType="textPassword"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp"
+                        android:singleLine="true"
+                        android:textSize="18sp"
+                        android:text="@={vm.password}" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="24dp"
+            android:onClick="@{(view)->presenter.onClick(view)}"
+            android:src="@drawable/ic_done_black_24dp"
+            android:tint="@android:color/white"
+            app:fabSize="normal" />
+    </FrameLayout>
+</layout>

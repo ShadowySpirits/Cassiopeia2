@@ -1,0 +1,27 @@
+package co.bangumi.framework.util
+
+import android.app.ActivityManager
+import android.content.Context
+
+// TODO 重构
+class PackageUtil {
+    companion object {
+        fun getVersionCode(context: Context): Int {
+            return context.packageManager
+                .getPackageInfo(context.packageName, 0).versionCode
+        }
+
+        fun isActivityAlive(context: Context, activityName: String?): Boolean {
+            val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val list = am.getRunningTasks(100)
+            for (info in list) {
+                if (info.topActivity.className == activityName
+                    || info.baseActivity.className == activityName
+                ) {
+                    return true
+                }
+            }
+            return false
+        }
+    }
+}
