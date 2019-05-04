@@ -4,6 +4,7 @@ import android.app.Activity
 import android.widget.Toast
 import co.bangumi.framework.BuildConfig
 import co.bangumi.framework.annotation.*
+import co.bangumi.framework.base.BaseActivity
 import es.dmoral.toasty.Toasty
 import kotlinx.coroutines.*
 import java.net.SocketTimeoutException
@@ -50,13 +51,12 @@ fun Activity.toastFailure(error: Throwable?) {
 fun <T : Any> Activity.argument(key: String) =
     lazy { intent.extras[key] as? T ?: error("Intent Argument $key is missing") }
 
-// TODO 添加生命周期、单例控制，完善上下文调度
-inline fun <T> asyncRequest(
+inline fun <T> BaseActivity<*>.requestAsync(
     crossinline async: suspend () -> T,
     crossinline onSuccess: (response: T) -> Unit,
     crossinline onFailure: (e: Throwable) -> Unit
-): Job {
-    return GlobalScope.launch(Dispatchers.IO) {
+): Deferred<Unit> {
+    return async(Dispatchers.IO, CoroutineStart.LAZY) {
         try {
             async().run {
                 withContext(Dispatchers.Main) {
@@ -71,11 +71,11 @@ inline fun <T> asyncRequest(
     }
 }
 
-inline fun <T> Activity.asyncRequest(
+inline fun <T> BaseActivity<*>.requestAsync(
     crossinline async: suspend () -> T,
     crossinline onSuccess: (response: T) -> Unit
-): Job {
-    return GlobalScope.launch(Dispatchers.IO) {
+): Deferred<Unit> {
+    return async(Dispatchers.IO, CoroutineStart.LAZY) {
         try {
             async().run {
                 withContext(Dispatchers.Main) {
@@ -84,9 +84,8 @@ inline fun <T> Activity.asyncRequest(
             }
         } catch (e: Throwable) {
             withContext(Dispatchers.Main) {
-                this@asyncRequest.toastFailure(e)
+                this@requestAsync.toastFailure(e)
             }
         }
     }
 }
-

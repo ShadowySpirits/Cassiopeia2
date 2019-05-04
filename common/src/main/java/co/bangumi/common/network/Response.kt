@@ -8,11 +8,10 @@ class DataResponse<T> : MessageResponse() {
     private var data: T? = null
 
     fun getData(): T {
-        if (data != null) {
-            return data!!
-        } else {
-            throw ApiException("Empty Data")
+        data?.let {
+            return it
         }
+        throw ApiException("Empty Data")
     }
 
     override fun toString(): String {
