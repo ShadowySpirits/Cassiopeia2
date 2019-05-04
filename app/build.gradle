@@ -3,6 +3,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -14,6 +17,21 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        debug {
+            storeFile file(properties.getProperty("keystore.path"))
+            storePassword properties.getProperty("keystore.password")
+            keyAlias properties.getProperty("keyAlias.debug")
+            keyPassword properties.getProperty("keyPassword.debug")
+        }
+        release {
+            storeFile file(properties.getProperty("keystore.path"))
+            storePassword properties.getProperty("keystore.password")
+            keyAlias properties.getProperty("keyAlias.release")
+            keyPassword properties.getProperty("keyPassword.release")
+        }
+    }
+
     buildTypes {
         debug{
             applicationIdSuffix '.debug'
@@ -21,6 +39,8 @@ android {
         }
         release {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
