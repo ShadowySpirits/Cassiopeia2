@@ -2,7 +2,6 @@ package co.bangumi.common.network
 
 import co.bangumi.common.model.entity.*
 import co.bangumi.framework.network.MessageResponse
-import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -16,10 +15,10 @@ interface ApiService {
     suspend fun login(@Body body: LoginRequest): Response<MessageResponse>
 
     @POST("api/user/logout")
-    fun logout(): Deferred<MessageResponse>
+    fun logout(): MessageResponse
 
     @GET("/api/user/info")
-    fun getUserInfo(): Deferred<DataResponse<UserInfo>>
+    fun getUserInfo(): DataResponse<UserInfo>
 
 
     /**
@@ -31,13 +30,13 @@ interface ApiService {
         @Query("page") page: Int?,
         @Query("count") count: Int?,
         @Query("status") status: Int?
-    ): Deferred<ListResponse<Bangumi>>
+    ): ListResponse<Bangumi>
 
     @GET("/api/home/announce")
-    fun getAnnounceBangumi(): Deferred<ListResponse<Announce>>
+    fun getAnnounceBangumi(): ListResponse<Announce>
 
     @GET("/api/home/on_air")
-    fun getOnAir(@Query("type") type: Int?): Deferred<ListResponse<Bangumi>>
+    fun getOnAir(@Query("type") type: Int?): ListResponse<Bangumi>
 
     @GET("/api/home/bangumi")
     fun getSearchBangumi(
@@ -47,21 +46,21 @@ interface ApiService {
         @Query("sort_order") sortOrder: String?,
         @Query("name") name: String?,
         @Query("type") type: Int?
-    ): Deferred<ListResponse<Bangumi>>
+    ): ListResponse<Bangumi>
 
     @GET("/api/home/bangumi/{id}")
-    fun getBangumiDetail(@Path("id") id: String): Deferred<DataResponse<BangumiDetail>>
+    fun getBangumiDetail(@Path("id") id: String): DataResponse<BangumiDetail>
 
     @GET("/api/home/episode/{id}")
-    fun getEpisodeDetail(@Path("id") id: String): Deferred<EpisodeDetail>
+    fun getEpisodeDetail(@Path("id") id: String): EpisodeDetail
 
     /**
      * Favorite and history
      */
 
     @POST("/api/watch/favorite/bangumi/{bangumi_id}")
-    fun uploadFavoriteStatus(@Path("bangumi_id") bangumiId: String, @Body body: FavoriteChangeRequest): Deferred<MessageResponse>
+    fun uploadFavoriteStatus(@Path("bangumi_id") bangumiId: String, @Body body: FavoriteChangeRequest): MessageResponse
 
     @POST("/api/watch/history/synchronize")
-    fun uploadWatchHistory(@Body body: HistoryChangeRequest): Deferred<MessageResponse>
+    fun uploadWatchHistory(@Body body: HistoryChangeRequest): MessageResponse
 }
