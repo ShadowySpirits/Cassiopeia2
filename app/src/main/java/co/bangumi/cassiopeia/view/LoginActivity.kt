@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     override fun onDebouncedClick(view: View) {
         if (mBinding.user.check("账号不能为空") and mBinding.pw.check("密码不能为空")) {
-            requestAsync({ mViewModel.login() }) {
+            requestAsync(mViewModel::login) {
                 if (it.isSuccessful) {
                     toastSuccess(it.body()?.message())
                 } else {

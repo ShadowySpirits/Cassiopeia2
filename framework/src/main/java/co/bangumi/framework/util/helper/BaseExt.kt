@@ -4,9 +4,7 @@ import android.app.Activity
 import android.widget.Toast
 import co.bangumi.framework.BuildConfig
 import co.bangumi.framework.annotation.*
-import co.bangumi.framework.base.BaseActivity
 import es.dmoral.toasty.Toasty
-import kotlinx.coroutines.*
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -25,9 +23,9 @@ fun Activity.dispatchFailure(error: Throwable?) {
             it.printStackTrace()
         }
         when (it) {
-            is SocketTimeoutException -> toast("网络连接超时", ERROR)
-            is UnknownHostException -> toast("网络异常", ERROR)
-            else -> toast("unknown error", ERROR)
+            is SocketTimeoutException -> toastError("网络连接超时")
+            is UnknownHostException -> toastError("网络异常")
+            else -> toastError("unknown error")
         }
     }
 }
@@ -51,41 +49,3 @@ fun Activity.toastFailure(error: Throwable?) {
 fun <T : Any> Activity.argument(key: String) =
     lazy { intent.extras[key] as? T ?: error("Intent Argument $key is missing") }
 
-inline fun <T> BaseActivity<*>.requestAsync(
-    crossinline async: suspend () -> T,
-    crossinline onSuccess: (response: T) -> Unit,
-    crossinline onFailure: (e: Throwable) -> Unit
-): Deferred<Unit> {
-    return async(Dispatchers.IO, CoroutineStart.LAZY) {
-        try {
-            async().run {
-                withContext(Dispatchers.Main) {
-                    onSuccess(this@run)
-                }
-            }
-        } catch (e: Throwable) {
-            withContext(Dispatchers.Main) {
-                onFailure(e)
-            }
-        }
-    }
-}
-
-inline fun <T> BaseActivity<*>.requestAsync(
-    crossinline async: suspend () -> T,
-    crossinline onSuccess: (response: T) -> Unit
-): Deferred<Unit> {
-    return async(Dispatchers.IO, CoroutineStart.LAZY) {
-        try {
-            async().run {
-                withContext(Dispatchers.Main) {
-                    onSuccess(this@run)
-                }
-            }
-        } catch (e: Throwable) {
-            withContext(Dispatchers.Main) {
-                this@requestAsync.toastFailure(e)
-            }
-        }
-    }
-}

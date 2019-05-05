@@ -63,7 +63,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePre
 
     protected fun getUUID() = UUID.randomUUID().toString()
 
-
     override fun onDestroy() {
         super.onDestroy()
         coroutineContext.cancel()
