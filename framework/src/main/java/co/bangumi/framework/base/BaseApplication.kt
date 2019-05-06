@@ -9,6 +9,8 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Toasty.Config.getInstance().apply()
+        Toasty.Config.getInstance()
+            .allowQueue(true)
+            .apply()
     }
 }

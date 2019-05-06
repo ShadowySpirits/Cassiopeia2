@@ -7,7 +7,7 @@ import co.bangumi.framework.BuildConfig
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
 
-class PreferencesUtil private constructor(context: Context) {
+class PreferenceUtil private constructor(context: Context) {
     private val preferences: SharedPreferences
 
     init {
@@ -94,16 +94,16 @@ class PreferencesUtil private constructor(context: Context) {
 
     companion object {
         private const val TAG_KEY = BuildConfig.APPLICATION_ID
-        private var mInstance: PreferencesUtil? = null
+        private var mInstance: PreferenceUtil? = null
 
         fun init(context: Context) {
             mInstance =
-                PreferencesUtil(context)
+                PreferenceUtil(context)
         }
 
-        fun getInstance(): PreferencesUtil {
+        fun getInstance(): PreferenceUtil {
             if (mInstance == null) {
-                throw IllegalStateException("PreferencesUtil Not initialed")
+                throw IllegalStateException("PreferenceUtil Not initialed")
             }
 
             return mInstance!!

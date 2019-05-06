@@ -12,7 +12,8 @@ fun Activity.toast(msg: CharSequence, @ToastType type: Int = NORMAL, duration: I
     when (type) {
         WARNING -> Toasty.warning(this, msg, duration, true).show()
         ERROR -> Toasty.error(this, msg, duration, true).show()
-        NORMAL -> Toasty.info(this, msg, duration, false).show()
+        NORMAL -> Toasty.normal(this, msg, duration).show()
+        INFO -> Toasty.info(this, msg, duration, true).show()
         SUCCESS -> Toasty.success(this, msg, duration, true).show()
     }
 }
@@ -30,16 +31,24 @@ fun Activity.dispatchFailure(error: Throwable?) {
     }
 }
 
-fun Activity.toastSuccess(msg: String?) {
-    msg?.let { toast(it, SUCCESS) }
-}
-
 fun Activity.toastWarning(msg: String?) {
     msg?.let { toast(it, WARNING) }
 }
 
 fun Activity.toastError(msg: String?) {
     msg?.let { toast(it, ERROR) }
+}
+
+fun Activity.toastNormal(msg: String?) {
+    msg?.let { toast(it, NORMAL) }
+}
+
+fun Activity.toastInfo(msg: String?) {
+    msg?.let { toast(it, INFO) }
+}
+
+fun Activity.toastSuccess(msg: String?) {
+    msg?.let { toast(it, SUCCESS) }
 }
 
 fun Activity.toastFailure(error: Throwable?) {

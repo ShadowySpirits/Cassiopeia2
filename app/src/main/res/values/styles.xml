@@ -11,6 +11,13 @@
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
     </style>
 
+    <style name="AppStartTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@mipmap/bg_launch</item>
+    </style>
+
     <style name="AppTheme" parent="AppThemeActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
