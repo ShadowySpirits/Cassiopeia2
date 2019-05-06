@@ -21,9 +21,10 @@
     <color name="textColorSecondary">#bff0f0f0</color>
     <color name="textColorLowLight">#80C8C8C8</color>
 
-    <color name="backgroundPrimary">#303030</color>
     <color name="backgroundSecondary">#141414</color>
     <color name="backgroundFore">#212121</color>
+    <color name="backgroundPrimary">#303030</color>
+    <color name="backgroundGray">#424242</color>
 
     <color name="black_overlay">#66000000</color>
     <color name="black_padding">#80000000</color>
