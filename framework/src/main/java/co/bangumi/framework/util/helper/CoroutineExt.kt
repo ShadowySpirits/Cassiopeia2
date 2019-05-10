@@ -61,20 +61,6 @@ inline fun <T> BaseFragment<*>.request(
     }
 }
 
-inline fun <T> ViewModel.requestAsync(
-    crossinline block: suspend () -> T,
-    crossinline onSuccess: (response: T) -> Unit,
-    crossinline onFailure: (e: Throwable) -> Unit
-): Deferred<Unit> {
-    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        try {
-            onSuccess(block())
-        } catch (e: Throwable) {
-            onFailure(e)
-        }
-    }
-}
-
 inline fun <T, R> ViewModel.requestAsync(
     crossinline block: suspend () -> T,
     crossinline onSuccess: (response: T) -> R
@@ -92,19 +78,19 @@ inline fun <T> ViewModel.requestAsync(
     }
 }
 
-//@Suppress("DeferredResultUnused")
-//inline fun <T> ViewModel.requestAsync(
-//    vararg blocks: suspend () -> T,
-//    crossinline onComplete: (response: T) -> Unit
-//): Deferred<Unit> {
-//    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-//        val supervisor = SupervisorJob()
-//        with(CoroutineScope(coroutineContext + supervisor)) {
-//            blocks.forEach {
-//                async {
-//                    onComplete(it())
-//                }
-//            }
-//        }
-//    }
-//}
+@Suppress("DeferredResultUnused")
+inline fun <T> ViewModel.requestsAsync(
+    vararg blocks: suspend () -> T,
+    crossinline onComplete: (response: T) -> Unit
+): Deferred<Unit> {
+    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
+        val supervisor = SupervisorJob()
+        with(CoroutineScope(coroutineContext + supervisor)) {
+            blocks.forEach {
+                async {
+                    onComplete(it())
+                }
+            }
+        }
+    }
+}
