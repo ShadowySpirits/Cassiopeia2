@@ -3,6 +3,7 @@ package co.bangumi.framework.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.text.TextUtils
+import androidx.core.content.edit
 import co.bangumi.framework.BuildConfig
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
@@ -18,7 +19,9 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putLong(k: String, v: Long) {
-        preferences.edit().putLong(k, v).apply()
+        preferences.edit {
+            putLong(k, v)
+        }
     }
 
     fun getLong(k: String, defValue: Long): Long {
@@ -26,11 +29,15 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putInt(k: String, v: Int) {
-        preferences.edit().putInt(k, v).apply()
+        preferences.edit {
+            putInt(k, v)
+        }
     }
 
     fun remove(k: String) {
-        preferences.edit().remove(k).apply()
+        preferences.edit {
+            remove(k)
+        }
     }
 
     fun getInt(k: String, defValue: Int): Int {
@@ -38,7 +45,9 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putString(k: String, v: String) {
-        preferences.edit().putString(k, v).apply()
+        preferences.edit {
+            putString(k, v)
+        }
     }
 
     @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
@@ -47,7 +56,9 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putBoolean(k: String, v: Boolean) {
-        preferences.edit().putBoolean(k, v).apply()
+        preferences.edit {
+            putBoolean(k, v)
+        }
     }
 
     fun getBoolean(k: String, defValue: Boolean?): Boolean? {
@@ -56,7 +67,9 @@ class PreferenceUtil private constructor(context: Context) {
 
     fun putObject(k: String, v: Any) {
         val json = JsonUtil.toJson(v)
-        preferences.edit().putString("Object$k", json).apply()
+        preferences.edit {
+            putString("Object$k", json)
+        }
     }
 
     fun <T> getObject(k: String, classOfT: Class<T>): T? {
@@ -73,7 +86,9 @@ class PreferenceUtil private constructor(context: Context) {
 
     fun putObject(k: String, src: List<*>) {
         val json = JsonUtil.toJson(src)
-        preferences.edit().putString("List$k", json).apply()
+        preferences.edit {
+            putString("List$k", json)
+        }
     }
 
     fun <T> getObject(k: String, typeToken: TypeToken<*>): T? {
@@ -89,7 +104,9 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun clear() {
-        preferences.edit().clear().apply()
+        preferences.edit {
+            clear()
+        }
     }
 
     companion object {

@@ -8,19 +8,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import co.bangumi.framework.annotation.AllOpen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import java.util.*
 
 @AllOpen
-abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePresenter,
-    CoroutineScope by CoroutineScope(Dispatchers.IO) {
+abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePresenter {
 
     protected val MIN_CLICK_DELAY = 600L
     private var previousClickTime: Long = 0
-    private val runningMap by lazy { IdentityHashMap<String, Deferred<*>>() }
     protected val mBinding: VB by lazy { DataBindingUtil.setContentView<VB>(this, getLayoutId()) }
     protected var autoRefresh = true
 
@@ -46,26 +39,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePre
             previousClickTime = currentClickTime
             this.onDebouncedClick(view)
         }
-    }
-
-    @Suppress("DeferredResultUnused")
-    protected fun <T> Deferred<T>.startSingleInstance(taskId: String, displace: Boolean = true) {
-        this.invokeOnCompletion { runningMap.remove(taskId) }
-        if (runningMap.containsKey(taskId)) {
-            if (!displace) {
-                return
-            }
-            runningMap[taskId]?.cancel()
-        }
-        runningMap[taskId] = this
-        this.start()
-    }
-
-    protected fun getUUID() = UUID.randomUUID().toString()
-
-    override fun onDestroy() {
-        super.onDestroy()
-        coroutineContext.cancel()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

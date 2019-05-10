@@ -1,8 +1,8 @@
 package co.bangumi.cassiopeia.view
 
-import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.os.bundleOf
 import co.bangumi.cassiopeia.R
 import co.bangumi.cassiopeia.databinding.ActivityLoginBinding
 import co.bangumi.cassiopeia.viewmodel.LoginViewModel
@@ -17,7 +17,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private val mViewModel: LoginViewModel by viewModel()
-    private val taskId: String = getUUID()
 
     override fun loadData(isRefresh: Boolean) {}
 
@@ -30,7 +29,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                 mBinding.user.clearFocus()
             }
         }
-        mBinding.pw.setOnKeyListener { v, keyCode, event ->
+        mBinding.pw.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 mBinding.fab.callOnClick()
                 return@setOnKeyListener true
@@ -44,18 +43,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onDebouncedClick(view: View) {
         if (mBinding.user.check("账号不能为空") and mBinding.pw.check("密码不能为空")) {
             toastInfo(getString(R.string.connecting))
-            requestAsync(mViewModel::login) {
+            request(mViewModel::login) {
                 if (it.isSuccessful) {
                     toastSuccess(it.body()?.message())
                     ConfigureUtil.setUsername(mBinding.user.text.toString())
-                    val bundle = Bundle()
-                    bundle.putString(FirebaseAnalytics.Param.METHOD, "origin")
-                    FirebaseAnalytics.getInstance(this)
-                        .logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+                    FirebaseAnalytics.getInstance(this@LoginActivity)
+                        .logEvent(
+                            FirebaseAnalytics.Event.LOGIN,
+                            bundleOf(FirebaseAnalytics.Param.METHOD to "origin")
+                        )
                 } else {
                     toastError(JsonUtil.convertErrorBody(it, MessageResponse::class.java)?.message())
                 }
-            }.startSingleInstance(taskId)
+            }
         }
     }
 }
