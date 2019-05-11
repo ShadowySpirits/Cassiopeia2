@@ -1,4 +1,4 @@
-package co.bangumi.cassiopeia.view
+package co.bangumi.cassiopeia.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import co.bangumi.cassiopeia.R
 import co.bangumi.common.utils.ConfigureUtil
 import co.bangumi.framework.util.PackageUtil
-import co.bangumi.framework.util.helper.toastNormal
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import org.jetbrains.anko.startActivity
 
@@ -16,6 +15,7 @@ class StartUpActivity : AppCompatActivity() {
         val isConfigured = ConfigureUtil.configured()
         val intent = intent
         if (isConfigured && intent.action == Intent.ACTION_VIEW) {
+            // TODO open DetailActivity here
             var url = intent.dataString
             FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
@@ -30,7 +30,7 @@ class StartUpActivity : AppCompatActivity() {
                 }
         } else {
             if (isConfigured) {
-                toastNormal("isLogin")
+                startActivity<HomeActivity>()
             } else {
                 startActivity<LoginActivity>()
             }

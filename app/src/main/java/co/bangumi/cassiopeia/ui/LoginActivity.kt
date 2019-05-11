@@ -1,4 +1,4 @@
-package co.bangumi.cassiopeia.view
+package co.bangumi.cassiopeia.ui
 
 import android.view.KeyEvent
 import android.view.View
@@ -12,6 +12,7 @@ import co.bangumi.framework.network.MessageResponse
 import co.bangumi.framework.util.JsonUtil
 import co.bangumi.framework.util.helper.*
 import com.google.firebase.analytics.FirebaseAnalytics
+import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
@@ -52,6 +53,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                             FirebaseAnalytics.Event.LOGIN,
                             bundleOf(FirebaseAnalytics.Param.METHOD to "origin")
                         )
+                    startActivity<HomeActivity>()
+                    finish()
                 } else {
                     toastError(JsonUtil.convertErrorBody(it, MessageResponse::class.java)?.message())
                 }

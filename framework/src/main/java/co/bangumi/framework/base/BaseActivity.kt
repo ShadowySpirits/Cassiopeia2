@@ -1,10 +1,8 @@
 package co.bangumi.framework.base
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import co.bangumi.framework.annotation.AllOpen
@@ -41,23 +39,23 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePre
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    fun initBackToolbar(toolbar: Toolbar) {
-        setSupportActionBar(toolbar)
-
-        val bar = supportActionBar
-        if (bar != null) {
-            bar.title = null
-            bar.setDisplayHomeAsUpEnabled(true)
-            bar.setDisplayShowHomeEnabled(true)
-            bar.setDisplayShowTitleEnabled(true)
-            bar.setHomeButtonEnabled(true)
-        }
-    }
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            android.R.id.home -> onBackPressed()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
+//
+//    fun initBackToolbar(toolbar: Toolbar) {
+//        setSupportActionBar(toolbar)
+//
+//        val bar = supportActionBar
+//        if (bar != null) {
+//            bar.title = null
+//            bar.setDisplayHomeAsUpEnabled(true)
+//            bar.setDisplayShowHomeEnabled(true)
+//            bar.setDisplayShowTitleEnabled(true)
+//            bar.setHomeButtonEnabled(true)
+//        }
+//    }
 }

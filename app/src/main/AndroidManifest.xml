@@ -23,14 +23,17 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".view.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
-
+            android:name=".ui.HomeActivity"
+            android:label="@string/title_activity_home" />
         <activity
-            android:name=".view.StartUpActivity"
+            android:name=".ui.LoginActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.StartUpActivity"
             android:theme="@style/AppStartTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>

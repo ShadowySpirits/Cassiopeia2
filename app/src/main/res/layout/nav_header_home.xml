@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:background="@mipmap/nav_bg"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_padding"
+        android:paddingStart="@dimen/nav_header_left_padding"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
+        tools:ignore="RtlSymmetry">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="ShadowySpirits" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            tools:text="admin@sspirits.top" />
+    </LinearLayout>
+</LinearLayout>
