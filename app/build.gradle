@@ -10,6 +10,13 @@ apply plugin: 'io.fabric'
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+kapt {
+    useBuildCache = true
+    javacOptions {
+        option("-Xmaxerrs", 500)
+    }
+}
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -19,6 +26,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    dexOptions {
+        preDexLibraries true
+        maxProcessCount 8
     }
 
     signingConfigs {
@@ -52,6 +64,10 @@ android {
 
     dataBinding {
         enabled = true
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
