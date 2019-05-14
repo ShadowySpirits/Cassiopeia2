@@ -57,5 +57,6 @@
     <string name="loading">Loading…</string>
     <string name="collect">受け取り</string>
     <string name="delete_collection">削除する</string>
+    <string name="watching">視聴中</string>
 
 </resources>

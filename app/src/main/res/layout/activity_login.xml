@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -41,33 +42,35 @@
                 android:id="@+id/user"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/backgroundGray"
                 android:gravity="center_vertical"
                 android:hint="@string/first_config_username"
                 android:inputType="text"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:singleLine="true"
                 android:text="@={vm.user}"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/pw"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/backgroundGray"
                 android:gravity="center_vertical"
                 android:hint="@string/first_config_password"
                 android:inputType="textPassword"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:singleLine="true"
                 android:text="@={vm.password}"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                tools:ignore="Autofill" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -76,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="24dp"
-            android:onClick="@{(view)->presenter.onClick(view)}"
+            android:onClick="@{(view) -> presenter.onClick(view)}"
             android:src="@drawable/ic_done_black_24dp"
             android:tint="@android:color/white"
             app:fabSize="normal" />

@@ -66,7 +66,11 @@ inline fun <T, R> ViewModel.requestAsync(
     crossinline onSuccess: (response: T) -> R
 ): Deferred<R> {
     return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        return@async onSuccess(block())
+        block().run {
+            withContext(Dispatchers.Main) {
+                onSuccess(this@run)
+            }
+        }
     }
 }
 
@@ -74,7 +78,7 @@ inline fun <T> ViewModel.requestAsync(
     crossinline block: suspend () -> T
 ): Deferred<T> {
     return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        return@async block()
+        block()
     }
 }
 
@@ -88,7 +92,11 @@ inline fun <T> ViewModel.requestsAsync(
         with(CoroutineScope(coroutineContext + supervisor)) {
             blocks.forEach {
                 async {
-                    onComplete(it())
+                    it().run {
+                        withContext(Dispatchers.Main) {
+                            onComplete(this@run)
+                        }
+                    }
                 }
             }
         }

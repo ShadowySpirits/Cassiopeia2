@@ -4,9 +4,9 @@ import android.view.View
 
 interface BasePresenter : View.OnClickListener {
 
-    fun loadData(isRefresh: Boolean)
-
     fun onDebouncedClick(view: View)
 
     override fun onClick(view: View)
+
+    fun onClick(view: View, onDebouncedClick: (view: View) -> Unit)
 }

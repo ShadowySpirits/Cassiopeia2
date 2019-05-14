@@ -2,7 +2,6 @@ package co.bangumi.common.network
 
 import co.bangumi.framework.network.ApiException
 import co.bangumi.framework.network.MessageResponse
-import java.util.*
 
 class DataResponse<T> : MessageResponse() {
     private var data: T? = null
@@ -26,7 +25,7 @@ class ListResponse<T> : MessageResponse() {
     val count: Int? = null
 
     fun getData(): List<T> {
-        return data ?: Collections.emptyList()
+        return data ?: emptyList()
     }
 
     override fun toString(): String {

@@ -10,10 +10,10 @@ import co.bangumi.framework.annotation.AllOpen
 @AllOpen
 abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePresenter {
 
-    protected val MIN_CLICK_DELAY = 600L
-    private var previousClickTime: Long = 0
     protected val mBinding: VB by lazy { DataBindingUtil.setContentView<VB>(this, getLayoutId()) }
     protected var autoRefresh = true
+    protected val MIN_CLICK_DELAY = 600L
+    private var previousClickTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +28,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePre
 
     abstract fun initView()
 
+    abstract fun loadData(isRefresh: Boolean)
+
     abstract fun getLayoutId(): Int
 
     override fun onClick(view: View) {
@@ -36,6 +38,15 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), BasePre
         if (previousClickTime == 0L || currentClickTime - previousClickTime >= MIN_CLICK_DELAY) {
             previousClickTime = currentClickTime
             this.onDebouncedClick(view)
+        }
+    }
+
+    override fun onClick(view: View, onDebouncedClick: (view: View) -> Unit) {
+        val currentClickTime = System.currentTimeMillis()
+
+        if (previousClickTime == 0L || currentClickTime - previousClickTime >= MIN_CLICK_DELAY) {
+            previousClickTime = currentClickTime
+            onDebouncedClick(view)
         }
     }
 

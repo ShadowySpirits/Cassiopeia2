@@ -1,5 +1,7 @@
 package co.bangumi.common.network
 
+import co.bangumi.common.annotation.SubType
+import co.bangumi.common.annotation.WatchStatus
 import co.bangumi.common.model.entity.*
 import co.bangumi.framework.network.MessageResponse
 import retrofit2.Response
@@ -15,10 +17,10 @@ interface ApiService {
     suspend fun login(@Body body: LoginRequest): Response<MessageResponse>
 
     @POST("api/user/logout")
-    fun logout(): MessageResponse
+    suspend fun logout(): MessageResponse
 
     @GET("/api/user/info")
-    fun getUserInfo(): DataResponse<UserInfo>
+    suspend fun getUserInfo(): DataResponse<UserInfo>
 
 
     /**
@@ -26,20 +28,20 @@ interface ApiService {
      */
 
     @GET("/api/home/my_bangumi")
-    fun getMyBangumi(
-        @Query("page") page: Int?,
+    suspend fun getMyBangumi(
+        @Query("page") @WatchStatus page: Int?,
         @Query("count") count: Int?,
         @Query("status") status: Int?
     ): ListResponse<Bangumi>
 
     @GET("/api/home/announce")
-    fun getAnnounceBangumi(): ListResponse<Announce>
+    suspend fun getAnnounceBangumi(): ListResponse<Announce>
 
     @GET("/api/home/on_air")
-    fun getOnAir(@Query("type") type: Int?): ListResponse<Bangumi>
+    suspend fun getOnAir(@Query("type") @SubType type: Int?): ListResponse<Bangumi>
 
     @GET("/api/home/bangumi")
-    fun getSearchBangumi(
+    suspend fun getSearchBangumi(
         @Query("page") page: Int?,
         @Query("count") count: Int?,
         @Query("sort_field") sortField: String?,
@@ -49,18 +51,18 @@ interface ApiService {
     ): ListResponse<Bangumi>
 
     @GET("/api/home/bangumi/{id}")
-    fun getBangumiDetail(@Path("id") id: String): DataResponse<BangumiDetail>
+    suspend fun getBangumiDetail(@Path("id") id: String): DataResponse<BangumiDetail>
 
     @GET("/api/home/episode/{id}")
-    fun getEpisodeDetail(@Path("id") id: String): EpisodeDetail
+    suspend fun getEpisodeDetail(@Path("id") id: String): EpisodeDetail
 
     /**
      * Favorite and history
      */
 
     @POST("/api/watch/favorite/bangumi/{bangumi_id}")
-    fun uploadFavoriteStatus(@Path("bangumi_id") bangumiId: String, @Body body: FavoriteChangeRequest): MessageResponse
+    suspend fun uploadFavoriteStatus(@Path("bangumi_id") bangumiId: String, @Body body: FavoriteChangeRequest): MessageResponse
 
     @POST("/api/watch/history/synchronize")
-    fun uploadWatchHistory(@Body body: HistoryChangeRequest): MessageResponse
+    suspend fun uploadWatchHistory(@Body body: HistoryChangeRequest): MessageResponse
 }

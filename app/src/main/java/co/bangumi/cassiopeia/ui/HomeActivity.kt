@@ -19,6 +19,7 @@ class HomeActivity : AppCompatActivity() {
     private val navController by lazy { findNavController(R.id.nav_host_fragment) }
     private val mFirebaseAnalytics: FirebaseAnalytics by lazy { FirebaseAnalytics.getInstance(this) }
 
+    // TODO 加载用户名
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)

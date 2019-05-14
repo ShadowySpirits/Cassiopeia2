@@ -18,6 +18,7 @@ fun Activity.toast(msg: CharSequence, @ToastType type: Int = NORMAL, duration: I
     }
 }
 
+// TODO 多语言支持
 fun Activity.dispatchFailure(error: Throwable?) {
     error?.let {
         if (BuildConfig.DEBUG) {
@@ -55,6 +56,10 @@ fun Activity.toastFailure(error: Throwable?) {
     dispatchFailure(error)
 }
 
-fun <T : Any> Activity.argument(key: String) =
-    lazy { intent.extras[key] as? T ?: error("Intent Argument $key is missing") }
+// Notice: using this function may cause IllegalStateException or ClassCastException
+@Suppress("UNCHECKED_CAST")
+fun <T> Activity.argument(key: String) =
+    intent.extras?.let {
+        it[key] as T
+    } ?: error("Intent Argument $key is missing")
 

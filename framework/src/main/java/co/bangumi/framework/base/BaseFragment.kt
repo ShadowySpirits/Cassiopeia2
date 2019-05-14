@@ -13,7 +13,7 @@ import co.bangumi.framework.util.helper.dispatchFailure
 import co.bangumi.framework.util.helper.toast
 
 @AllOpen
-abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
+abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), BasePresenter {
 
     protected val mBinding: VB by lazy { DataBindingUtil.inflate<VB>(layoutInflater, getLayoutId(), null, false) }
 
@@ -23,6 +23,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
 
     protected var isPrepared: Boolean = false
     protected var hasLoadOnce: Boolean = false
+
+    protected val MIN_CLICK_DELAY = 600L
+    private var previousClickTime: Long = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +48,24 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
         mBinding.executePendingBindings()
         mBinding.lifecycleOwner = this
         return mBinding.root
+    }
+
+    override fun onClick(view: View) {
+        val currentClickTime = System.currentTimeMillis()
+
+        if (previousClickTime == 0L || currentClickTime - previousClickTime >= MIN_CLICK_DELAY) {
+            previousClickTime = currentClickTime
+            this.onDebouncedClick(view)
+        }
+    }
+
+    override fun onClick(view: View, onDebouncedClick: (view: View) -> Unit) {
+        val currentClickTime = System.currentTimeMillis()
+
+        if (previousClickTime == 0L || currentClickTime - previousClickTime >= MIN_CLICK_DELAY) {
+            previousClickTime = currentClickTime
+            onDebouncedClick(view)
+        }
     }
 
     /**
@@ -77,6 +98,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment() {
     }
 
     abstract fun initView()
+
     abstract fun loadData(isRefresh: Boolean)
 
     abstract fun getLayoutId(): Int

@@ -44,11 +44,19 @@ data class Bangumi(
         return rightNow.before(calendar.time)
     }
 
-    fun getLocalName(): String {
+    fun localName(): String {
         return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
             if (!TextUtils.isEmpty(name_cn)) name_cn else name
         } else {
             if (TextUtils.isEmpty(name)) name_cn else name
+        }
+    }
+
+    fun subTitle(): String {
+        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+            if (!TextUtils.isEmpty(name)) name else name_cn
+        } else {
+            if (!TextUtils.isEmpty(name)) name_cn else name
         }
     }
 }

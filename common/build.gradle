@@ -37,6 +37,7 @@ dependencies {
     implementation project(':framework')
 
     api 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
     api "org.jetbrains.anko:anko-commons:0.10.8"
 
