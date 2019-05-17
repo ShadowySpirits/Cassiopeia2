@@ -50,6 +50,7 @@ android {
 
     buildTypes {
         debug {
+            ext.enableCrashlytics = false
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.debug
         }
@@ -87,13 +88,13 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
 
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0-alpha01"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha01"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:2.0.0"
 
-    implementation "androidx.navigation:navigation-fragment-ktx:2.1.0-alpha03"
-    implementation "androidx.navigation:navigation-ui-ktx:2.1.0-alpha03"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
     implementation "org.koin:koin-androidx-viewmodel:2.0.0-rc-2"
 
