@@ -23,22 +23,22 @@ class HomeViewModel(private val repo: DataRepository) : BaseViewModel() {
             it.getData().toHashSet()
                 .sortedBy { it.sort_order }
                 .groupBy { it.position }[RECOMMENDATION]?.let {
-                announceList.value = it.map { it.bangumi }
+                announceList.postValue(it.map { it.bangumi })
             }
         }.startSingleInstance(getAnnounceTaskId)
     }
 
     suspend fun getMyBangumiAsync(): Deferred<Unit> {
         return requestAsync(repo::getMyBangumi) {
-            watchingList.value = it.getData().filter {
+            watchingList.postValue(it.getData().filter {
                 return@filter it.favorite_status == WATCHING
-            }.sortedBy { -it.unwatched_count }
+            }.sortedBy { -it.unwatched_count })
         }.startSingleInstance(getMyBangumiTaskId)
     }
 
     suspend fun getOnAirAsync(): Deferred<Unit> {
         return requestAsync(repo::getOnAir) {
-            onAirList.value = it.getData()
+            onAirList.postValue(it.getData())
         }.startSingleInstance(getOnAirTaskId)
     }
 }

@@ -1,5 +1,6 @@
 package co.bangumi.framework.util.helper
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
@@ -20,20 +21,6 @@ inline fun <T> BaseActivity<*>.request(
     }
 }
 
-inline fun <T> BaseActivity<*>.request(
-    crossinline block: suspend () -> Deferred<T>,
-    crossinline onSuccess: (response: T) -> Unit,
-    crossinline onFailure: (e: Throwable) -> Unit
-) {
-    lifecycleScope.launch {
-        try {
-            onSuccess(block().await())
-        } catch (e: Throwable) {
-            onFailure(e)
-        }
-    }
-}
-
 inline fun <T> BaseFragment<*>.request(
     crossinline block: suspend () -> Deferred<T>,
     crossinline onSuccess: (response: T) -> Unit
@@ -47,7 +34,7 @@ inline fun <T> BaseFragment<*>.request(
     }
 }
 
-inline fun <T> BaseFragment<*>.request(
+inline fun <T> LifecycleOwner.request(
     crossinline block: suspend () -> Deferred<T>,
     crossinline onSuccess: (response: T) -> Unit,
     crossinline onFailure: (e: Throwable) -> Unit
@@ -66,11 +53,7 @@ inline fun <T, R> ViewModel.requestAsync(
     crossinline onSuccess: (response: T) -> R
 ): Deferred<R> {
     return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        block().run {
-            withContext(Dispatchers.Main) {
-                onSuccess(this@run)
-            }
-        }
+        onSuccess(block())
     }
 }
 
@@ -92,11 +75,7 @@ inline fun <T> ViewModel.requestsAsync(
         with(CoroutineScope(coroutineContext + supervisor)) {
             blocks.forEach {
                 async {
-                    it().run {
-                        withContext(Dispatchers.Main) {
-                            onComplete(this@run)
-                        }
-                    }
+                    onComplete(it())
                 }
             }
         }
