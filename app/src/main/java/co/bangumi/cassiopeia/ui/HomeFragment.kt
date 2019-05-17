@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import co.bangumi.cassiopeia.R
@@ -24,6 +25,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun getLayoutId(): Int = R.layout.fragment_home
 
     override fun initView() {
+        isLoadOnce = true
         mBinding.presenter = this
         mBinding.vm = mViewModel
 
@@ -44,6 +46,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 title.text = item.localName()
                 subtitle.text = item.summary
                 eps.text = getString(R.string.eps_all).format(item.eps)
+                itemView.setOnClickListener {
+                    findNavController().navigate(HomeFragmentDirections.actionToDetailFragment(item))
+                }
             }
         mViewModel.announceList.observe(this) { list ->
             if (list.isNotEmpty()) {
@@ -59,9 +64,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         mBinding.listWatching.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter =
             mBinding.listWatching.setUpWithBangumi(::MediumCardHolder, R.layout.item_bangumi_medium) { _, item ->
-                ImageUtil.loadImage(this@HomeFragment, image, item.cover, item.cover_color)
+                ImageUtil.loadImage(this@HomeFragment, image, item)
                 title.text = item.localName()
                 new.text = getString(R.string.unwatched).format(item.unwatched_count)
+                itemView.setOnClickListener {
+                    findNavController().navigate(HomeFragmentDirections.actionToDetailFragment(item))
+                }
             }
         mViewModel.watchingList.observe(this) { list ->
             if (list.isNotEmpty()) {
@@ -76,7 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setUpReleasing() {
         mBinding.listReleasing.layoutManager = LinearLayoutManager(context)
         val adapter = mBinding.listReleasing.setUpWithBangumi(::WideCardHolder, R.layout.item_bangumi_wide) { _, item ->
-            ImageUtil.loadImage(this@HomeFragment, image, item.cover, item.cover_color)
+            ImageUtil.loadImage(this@HomeFragment, image, item)
             title.text = item.localName()
             subtitle.text = item.subTitle()
             info.text = getString(R.string.update_info)
@@ -93,13 +101,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
             if (item.type == RAW) {
                 typeRaw.visibility = View.VISIBLE
-                typeSub.visibility = View.INVISIBLE
+                typeSub.visibility = View.GONE
             } else {
                 typeSub.visibility = View.VISIBLE
-                typeRaw.visibility = View.INVISIBLE
+                typeRaw.visibility = View.GONE
             }
 
             info2.text = item.summary.replace("\n", "")
+            itemView.setOnClickListener {
+                findNavController().navigate(HomeFragmentDirections.actionToDetailFragment(item))
+            }
         }
         mViewModel.onAirList.observe(this) { list ->
             if (list.isNotEmpty()) {

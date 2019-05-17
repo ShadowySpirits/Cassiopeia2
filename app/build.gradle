@@ -50,7 +50,6 @@ android {
 
     buildTypes {
         debug {
-            ext.enableCrashlytics = false
             applicationIdSuffix '.debug'
             signingConfig signingConfigs.debug
         }

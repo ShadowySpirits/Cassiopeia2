@@ -75,4 +75,6 @@
     <string name="collect">Collect</string>
     <string name="delete_collection">Delete Collection</string>
     <string name="watching">Watching</string>
+    <string name="bgm_tv">bgm.tv</string>
+    <string name="episodes">Episodes</string>
 </resources>

@@ -22,7 +22,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), BasePresenter {
     protected var visible = false
 
     protected var isPrepared: Boolean = false
-    protected var hasLoadOnce: Boolean = false
+    protected var isLoadOnce: Boolean = false
 
     protected val MIN_CLICK_DELAY = 600L
     private var previousClickTime: Long = 0
@@ -36,12 +36,16 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), BasePresenter {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         retainInstance = true
+        if (isLoadOnce && isPrepared) {
+            return
+        }
         initView()
         if (lazyLoad) {
             lazyLoad()
         } else {
             loadData(true)
         }
+        isPrepared = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -68,9 +72,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), BasePresenter {
         }
     }
 
-    /**
-     * 是否可见，延迟加载
-     */
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (userVisibleHint) {

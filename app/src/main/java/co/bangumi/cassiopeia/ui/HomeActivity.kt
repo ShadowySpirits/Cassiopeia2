@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
 //        menuInflater.inflate(R.menu.home, menu)
 //        return true
 //    }
-//
+
 //    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 //        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
 //    }

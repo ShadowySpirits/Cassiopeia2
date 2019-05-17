@@ -58,5 +58,7 @@
     <string name="collect">收藏</string>
     <string name="delete_collection">删除收藏</string>
     <string name="watching">在看</string>
+    <string name="bgm_tv">bgm.tv</string>
+    <string name="episodes">剧集列表</string>
 
 </resources>

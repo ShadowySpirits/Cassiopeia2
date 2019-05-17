@@ -58,5 +58,7 @@
     <string name="collect">受け取り</string>
     <string name="delete_collection">削除する</string>
     <string name="watching">視聴中</string>
+    <string name="bgm_tv">bgm.tv</string>
+    <string name="episodes">エピソード</string>
 
 </resources>
