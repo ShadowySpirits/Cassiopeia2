@@ -97,6 +97,8 @@ dependencies {
 
     implementation "org.koin:koin-androidx-viewmodel:2.0.0-rc-2"
 
+    implementation 'com.github.Yalantis:Context-Menu.Android:1.0.8'
+
     implementation 'com.google.firebase:firebase-messaging:18.0.0'
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.google.firebase:firebase-dynamic-links:17.0.0'

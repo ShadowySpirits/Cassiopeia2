@@ -13,13 +13,13 @@ data class Episode(
     val airdate: String,
     val name_cn: String,
     val thumbnail: String,
-    val thumbnail_color: String,
+    val thumbnail_color: String?,
     val delete_mark: Long,
     val create_time: Long,
     val duration: String,
     val id: String,
 
-    val watch_progress: WatchProgress
+    val watch_progress: WatchProgress?
 ) {
 
     override fun equals(other: Any?): Boolean {

@@ -7,37 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import co.bangumi.common.model.entity.Announce
 import co.bangumi.common.model.entity.Bangumi
-import co.bangumi.common.model.entity.BangumiDetail
-
-
-inline fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithAnnounce(
-    crossinline createViewHolder: (view: View) -> VH,
-    layoutID: Int,
-    crossinline bind: VH.(index: Int, item: Announce) -> Unit
-) {
-    this.adapter = object : ListAdapter<Announce, VH>(object : DiffUtil.ItemCallback<Announce>() {
-        override fun areItemsTheSame(oldItem: Announce, newItem: Announce): Boolean {
-            return oldItem.id === newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Announce, newItem: Announce): Boolean {
-            return oldItem == newItem
-        }
-    }) {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-            val inflater = LayoutInflater.from(parent.context)
-            return createViewHolder(inflater.inflate(layoutID, parent, false))
-        }
-
-        override fun onBindViewHolder(holder: VH, position: Int) {
-            holder.apply {
-                bind(position, getItem(position))
-            }
-        }
-    }
-}
+import co.bangumi.common.model.entity.Episode
 
 fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumi(
     createViewHolder: (view: View) -> VH,
@@ -68,17 +39,17 @@ fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumi(
     return listAdapter
 }
 
-inline fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumiDetail(
-    crossinline createViewHolder: (view: View) -> VH,
+fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumiEpisode(
+    createViewHolder: (view: View) -> VH,
     layoutID: Int,
-    crossinline bind: VH.(index: Int, item: BangumiDetail) -> Unit
-) {
-    this.adapter = object : ListAdapter<BangumiDetail, VH>(object : DiffUtil.ItemCallback<BangumiDetail>() {
-        override fun areItemsTheSame(oldItem: BangumiDetail, newItem: BangumiDetail): Boolean {
+    bind: VH.(index: Int, item: Episode) -> Unit
+): ListAdapter<Episode, VH> {
+    val listAdapter = object : ListAdapter<Episode, VH>(object : DiffUtil.ItemCallback<Episode>() {
+        override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
             return oldItem.id === newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: BangumiDetail, newItem: BangumiDetail): Boolean {
+        override fun areContentsTheSame(oldItem: Episode, newItem: Episode): Boolean {
             return oldItem == newItem
         }
     }) {
@@ -93,4 +64,6 @@ inline fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumiDetail(
             }
         }
     }
+    adapter = listAdapter
+    return listAdapter
 }

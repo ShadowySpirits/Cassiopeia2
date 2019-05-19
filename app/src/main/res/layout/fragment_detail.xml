@@ -35,9 +35,8 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/detailContentBackground"
                 app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-                app:layout_scrollFlags="scroll|enterAlways"
                 app:titleEnabled="true"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@id/toolbar">
 
                 <ImageView
                     android:id="@+id/image"
@@ -180,7 +179,7 @@
                                 android:singleLine="true"
                                 android:textColor="@color/textColorTitle2"
                                 app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@+id/btn_more"
+                                app:layout_constraintEnd_toStartOf="@id/btn_more"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -232,13 +231,13 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:padding="@dimen/dp_8"
-                                android:text="@string/app_name"
+                                android:text="@string/collect"
                                 android:textColor="@color/textColorPrimary" />
 
                         </LinearLayout>
 
                         <Button
-                            android:id="@+id/button_bgm_tv"
+                            android:id="@+id/btn_bgm_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="36dp"
                             android:background="@drawable/button_red"
@@ -273,7 +272,7 @@
                     tools:ignore="RtlSymmetry" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view"
+                    android:id="@+id/episode_list"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:focusable="true" />

@@ -13,7 +13,7 @@ class LoginViewModel(private val repo: DataRepository) : BaseViewModel() {
     val password = MutableLiveData<String>()
     private val taskId: String = getUUID()
 
-    suspend fun login(): Deferred<Response<MessageResponse>> {
+    suspend fun loginAsync(): Deferred<Response<MessageResponse>> {
         return requestAsync { repo.login(user.value!!, password.value!!) }.startSingleInstance(taskId)
     }
 }

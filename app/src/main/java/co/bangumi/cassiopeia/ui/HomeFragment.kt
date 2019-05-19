@@ -52,8 +52,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         mViewModel.announceList.observe(this) { list ->
             if (list.isNotEmpty()) {
-                mBinding.layoutRecommended.visibility = View.VISIBLE
                 adapter.submitList(list)
+                mBinding.layoutRecommended.visibility = View.VISIBLE
             } else {
                 mBinding.layoutRecommended.visibility = View.GONE
             }
@@ -73,8 +73,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         mViewModel.watchingList.observe(this) { list ->
             if (list.isNotEmpty()) {
-                mBinding.layoutWatching.visibility = View.VISIBLE
                 adapter.submitList(list)
+                mBinding.layoutWatching.visibility = View.VISIBLE
             } else {
                 mBinding.layoutWatching.visibility = View.GONE
             }
@@ -114,8 +114,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         mViewModel.onAirList.observe(this) { list ->
             if (list.isNotEmpty()) {
-                mBinding.layoutReleasing.visibility = View.VISIBLE
                 adapter.submitList(list)
+                mBinding.layoutReleasing.visibility = View.VISIBLE
             } else {
                 mBinding.layoutReleasing.visibility = View.GONE
             }
