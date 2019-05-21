@@ -4,8 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +23,6 @@ import co.bangumi.common.utils.ImageUtil
 import co.bangumi.common.utils.StringUtil
 import co.bangumi.common.utils.helper.adaptWidth
 import co.bangumi.common.utils.helper.setUpWithBangumiEpisode
-import co.bangumi.common.view.ProgressCoverView
 import co.bangumi.framework.base.BaseFragment
 import co.bangumi.framework.util.PackageUtil
 import co.bangumi.framework.util.helper.dispatchFailure
@@ -41,6 +38,7 @@ import com.yalantis.contextmenu.lib.MenuObject
 import com.yalantis.contextmenu.lib.MenuParams
 import com.yalantis.contextmenu.lib.interfaces.OnMenuItemClickListener
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.item_episode.view.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
@@ -49,7 +47,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
     private val mViewModel: DetailViewModel by viewModel()
     private val args: DetailFragmentArgs by navArgs()
     private val homeActivity: HomeActivity by lazy { activity as HomeActivity }
-    private lateinit var listAdapter: ListAdapter<Episode, EpisodeHolder>
+    private lateinit var listAdapter: ListAdapter<Episode, RecyclerView.ViewHolder>
     private lateinit var mMenuDialogFragment: ContextMenuDialogFragment
 
     override fun getLayoutId(): Int = R.layout.fragment_detail
@@ -89,10 +87,15 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         }
 
         mBinding.episodeList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        listAdapter = mBinding.episodeList.setUpWithBangumiEpisode(::EpisodeHolder, R.layout.item_episode) { _, item ->
-            ImageUtil.loadImage(this@DetailFragment, image, item.thumbnail, item.thumbnail_color ?: "#00000000")
-            title.text = item.getLocalName()
-            progress.setProgress(item.watch_progress?.percentage ?: 0f)
+        listAdapter = mBinding.episodeList.setUpWithBangumiEpisode(R.layout.item_episode) { _, item ->
+            ImageUtil.loadImage(
+                this@DetailFragment,
+                itemView.image,
+                item.thumbnail,
+                item.thumbnail_color ?: "#00000000"
+            )
+            itemView.title.text = item.getLocalName()
+            itemView.progress.setProgress(item.watch_progress?.percentage ?: 0f)
         }
 
         initMenuFragment()
@@ -243,11 +246,5 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
     override fun onDestroy() {
         super.onDestroy()
         homeActivity.toolbar.visibility = View.VISIBLE
-    }
-
-    private class EpisodeHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.findViewById(R.id.image)
-        val title: TextView = view.findViewById(R.id.title)
-        val progress: ProgressCoverView = view.findViewById(R.id.progress)
     }
 }

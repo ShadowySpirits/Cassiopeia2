@@ -39,12 +39,11 @@ fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumi(
     return listAdapter
 }
 
-fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumiEpisode(
-    createViewHolder: (view: View) -> VH,
+fun RecyclerView.setUpWithBangumiEpisode(
     layoutID: Int,
-    bind: VH.(index: Int, item: Episode) -> Unit
-): ListAdapter<Episode, VH> {
-    val listAdapter = object : ListAdapter<Episode, VH>(object : DiffUtil.ItemCallback<Episode>() {
+    bind: RecyclerView.ViewHolder.(index: Int, item: Episode) -> Unit
+): ListAdapter<Episode, RecyclerView.ViewHolder> {
+    val listAdapter = object : ListAdapter<Episode, RecyclerView.ViewHolder>(object : DiffUtil.ItemCallback<Episode>() {
         override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
             return oldItem.id === newItem.id
         }
@@ -53,12 +52,12 @@ fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumiEpisode(
             return oldItem == newItem
         }
     }) {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inflater = LayoutInflater.from(parent.context)
-            return createViewHolder(inflater.inflate(layoutID, parent, false))
+            return object : RecyclerView.ViewHolder(inflater.inflate(layoutID, parent, false)) {}
         }
 
-        override fun onBindViewHolder(holder: VH, position: Int) {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             holder.apply {
                 bind(position, getItem(position))
             }
