@@ -21,6 +21,21 @@ inline fun <T> BaseActivity<*>.request(
     }
 }
 
+inline fun <T> BaseActivity<*>.bundledRequests(
+    vararg blocks: suspend () -> Deferred<T>,
+    crossinline onComplete: (response: List<T>) -> Unit
+) {
+    lifecycleScope.launch {
+        with(CoroutineScope(coroutineContext + SupervisorJob())) {
+            try {
+                onComplete(blocks.map { it() }.awaitAll())
+            } catch (e: Throwable) {
+                dispatchFailure(e)
+            }
+        }
+    }
+}
+
 inline fun <T> BaseFragment<*>.request(
     crossinline block: suspend () -> Deferred<T>,
     crossinline onSuccess: (response: T) -> Unit
@@ -71,12 +86,24 @@ inline fun <T> ViewModel.requestsAsync(
     crossinline onComplete: (response: T) -> Unit
 ): Deferred<Unit> {
     return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        val supervisor = SupervisorJob()
-        with(CoroutineScope(coroutineContext + supervisor)) {
+        with(CoroutineScope(coroutineContext + SupervisorJob())) {
             blocks.forEach {
                 async {
                     onComplete(it())
                 }
+            }
+        }
+    }
+}
+
+@Suppress("DeferredResultUnused")
+fun <T> ViewModel.requestsAsync(
+    vararg blocks: suspend () -> T
+): Deferred<Unit> {
+    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
+        with(CoroutineScope(coroutineContext + SupervisorJob())) {
+            blocks.forEach {
+                async { it() }
             }
         }
     }
