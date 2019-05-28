@@ -27,6 +27,24 @@ data class Bangumi(
     val bgm_id: Long
 ) : Parcelable {
 
+    val localName: String
+        get() {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (!TextUtils.isEmpty(name_cn)) name_cn else name
+            } else {
+                if (TextUtils.isEmpty(name)) name_cn else name
+            }
+        }
+
+    val subTitle: String
+        get() {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (!TextUtils.isEmpty(name)) name else name_cn
+            } else {
+                if (!TextUtils.isEmpty(name)) name_cn else name
+            }
+        }
+
     override fun hashCode(): Int {
         return id.hashCode()
     }
@@ -45,21 +63,5 @@ data class Bangumi(
         calendar.time = airDate
         calendar.add(Calendar.WEEK_OF_YEAR, eps)
         return rightNow.before(calendar.time)
-    }
-
-    fun localName(): String {
-        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-            if (!TextUtils.isEmpty(name_cn)) name_cn else name
-        } else {
-            if (TextUtils.isEmpty(name)) name_cn else name
-        }
-    }
-
-    fun subTitle(): String {
-        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-            if (!TextUtils.isEmpty(name)) name else name_cn
-        } else {
-            if (!TextUtils.isEmpty(name)) name_cn else name
-        }
     }
 }

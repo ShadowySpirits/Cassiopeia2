@@ -43,7 +43,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val adapter =
             mBinding.listRecommended.setUpWithBangumi(::LargeCardHolder, R.layout.item_bangumi_large) { _, item ->
                 ImageUtil.loadImage(this@HomeFragment, image, item.cover_image.url, item.cover_color)
-                title.text = item.localName()
+                title.text = item.localName
                 subtitle.text = item.summary
                 eps.text = getString(R.string.eps_all).format(item.eps)
                 itemView.setOnClickListener {
@@ -65,7 +65,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         val adapter =
             mBinding.listWatching.setUpWithBangumi(::MediumCardHolder, R.layout.item_bangumi_medium) { _, item ->
                 ImageUtil.loadImage(this@HomeFragment, image, item)
-                title.text = item.localName()
+                title.text = item.localName
                 new.text = getString(R.string.unwatched).format(item.unwatched_count)
                 itemView.setOnClickListener {
                     findNavController().navigate(HomeFragmentDirections.actionToDetailFragment(item))
@@ -85,8 +85,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         mBinding.listReleasing.layoutManager = LinearLayoutManager(context)
         val adapter = mBinding.listReleasing.setUpWithBangumi(::WideCardHolder, R.layout.item_bangumi_wide) { _, item ->
             ImageUtil.loadImage(this@HomeFragment, image, item)
-            title.text = item.localName()
-            subtitle.text = item.subTitle()
+            title.text = item.localName
+            subtitle.text = item.subTitle
             info.text = getString(R.string.update_info)
                 .format(
                     item.eps, item.air_weekday.let { StringUtil.dayOfWeek(it) },

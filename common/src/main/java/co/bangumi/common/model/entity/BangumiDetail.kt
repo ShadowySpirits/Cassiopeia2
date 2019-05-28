@@ -28,11 +28,12 @@ data class BangumiDetail(
     val type: Int,
     val update_time: Long
 ) {
-    fun getLocalName(): String {
-        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-            if (!TextUtils.isEmpty(name_cn)) name_cn else name
-        } else {
-            if (TextUtils.isEmpty(name)) name_cn else name
+    val localName: String
+        get() {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (!TextUtils.isEmpty(name_cn)) name_cn else name
+            } else {
+                if (TextUtils.isEmpty(name)) name_cn else name
+            }
         }
-    }
 }

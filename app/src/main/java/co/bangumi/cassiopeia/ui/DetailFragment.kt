@@ -62,9 +62,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         homeActivity.toolbar.visibility = View.GONE
 
         val bangumi = args.bangumi
-        mBinding.toolbar.title = bangumi.localName()
+        mBinding.toolbar.title = bangumi.localName
         ImageUtil.loadImage(this, mBinding.image, bangumi)
-        mBinding.subtitle.text = bangumi.subTitle()
+        mBinding.subtitle.text = bangumi.subTitle
         mBinding.info.text = getString(R.string.update_info)
             .format(
                 bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) },
@@ -94,7 +94,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
                 item.thumbnail,
                 item.thumbnail_color ?: "#00000000"
             )
-            itemView.title.text = item.getLocalName()
+            itemView.title.text = item.localName
             itemView.progress.setProgress(item.watch_progress?.percentage ?: 0f)
         }
 
@@ -123,7 +123,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
                     val textIntent = Intent(Intent.ACTION_SEND)
                     textIntent.type = "text/plain"
                     textIntent.putExtra(Intent.EXTRA_TEXT, DETAIL_URL_PREFIX + bangumi.id)
-                    startActivity(Intent.createChooser(textIntent, bangumi.localName()))
+                    startActivity(Intent.createChooser(textIntent, bangumi.localName))
                     return@onClick
                 }
                 FirebaseDynamicLinks.getInstance().createDynamicLink()
@@ -136,7 +136,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
                     )
                     .setSocialMetaTagParameters(
                         DynamicLink.SocialMetaTagParameters.Builder()
-                            .setTitle(bangumi.localName())
+                            .setTitle(bangumi.localName)
                             .setDescription(bangumi.summary)
                             .setImageUrl(Uri.parse(bangumi.image))
                             .build()
@@ -148,7 +148,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
                             val textIntent = Intent(Intent.ACTION_SEND)
                             textIntent.type = "text/plain"
                             textIntent.putExtra(Intent.EXTRA_TEXT, shortLink.toString())
-                            startActivity(Intent.createChooser(textIntent, bangumi.localName()))
+                            startActivity(Intent.createChooser(textIntent, bangumi.localName))
                         } else {
                             homeActivity.toastError(getString(R.string.network_error))
                         }

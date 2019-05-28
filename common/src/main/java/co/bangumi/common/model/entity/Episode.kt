@@ -21,6 +21,14 @@ data class Episode(
 
     val watch_progress: WatchProgress?
 ) {
+    val localName: String
+        get() {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (TextUtils.isEmpty(name_cn)) name else name_cn
+            } else {
+                if (TextUtils.isEmpty(name)) name_cn else name
+            }
+        }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -35,13 +43,5 @@ data class Episode(
         var result = bangumi_id.hashCode()
         result = 31 * result + id.hashCode()
         return result
-    }
-
-    fun getLocalName(): String {
-        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-            if (TextUtils.isEmpty(name_cn)) name else name_cn
-        } else {
-            if (TextUtils.isEmpty(name)) name_cn else name
-        }
     }
 }

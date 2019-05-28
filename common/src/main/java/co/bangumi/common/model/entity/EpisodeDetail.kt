@@ -21,11 +21,12 @@ data class EpisodeDetail(
 
     var video_files: List<VideoFile>
 ) {
-    fun getLocalName(): String {
-        return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-            if (TextUtils.isEmpty(name_cn)) name else name_cn
-        } else {
-            if (TextUtils.isEmpty(name)) name_cn else name
+    val localName: String
+        get() {
+            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
+                if (TextUtils.isEmpty(name_cn)) name else name_cn
+            } else {
+                if (TextUtils.isEmpty(name)) name_cn else name
+            }
         }
-    }
 }
