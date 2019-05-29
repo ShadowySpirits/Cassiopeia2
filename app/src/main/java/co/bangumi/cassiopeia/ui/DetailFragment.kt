@@ -22,7 +22,7 @@ import co.bangumi.common.network.FavoriteChangeRequest
 import co.bangumi.common.utils.ImageUtil
 import co.bangumi.common.utils.StringUtil
 import co.bangumi.common.utils.helper.adaptWidth
-import co.bangumi.common.utils.helper.setUpWithBangumiEpisode
+import co.bangumi.common.utils.helper.setUpWithEntityWithId
 import co.bangumi.framework.base.BaseFragment
 import co.bangumi.framework.util.PackageUtil
 import co.bangumi.framework.util.helper.dispatchFailure
@@ -87,7 +87,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         }
 
         mBinding.episodeList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        listAdapter = mBinding.episodeList.setUpWithBangumiEpisode(R.layout.item_episode) { _, item ->
+        listAdapter = mBinding.episodeList.setUpWithEntityWithId(R.layout.item_episode) { _, item ->
             ImageUtil.loadImage(
                 this@DetailFragment,
                 itemView.image,

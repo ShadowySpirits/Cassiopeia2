@@ -4,6 +4,7 @@ import android.text.TextUtils
 import java.util.*
 
 data class Episode(
+    override val id: String,
     val status: Int,
     val episode_no: Int,
     val update_time: Long,
@@ -17,10 +18,8 @@ data class Episode(
     val delete_mark: Long,
     val create_time: Long,
     val duration: String,
-    val id: String,
-
     val watch_progress: WatchProgress?
-) {
+) : EntityWithId() {
     val localName: String
         get() {
             return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
@@ -30,18 +29,10 @@ data class Episode(
             }
         }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-
-        if (bangumi_id != bangumi_id)
-            return false
-        return id == id
-    }
-
-    override fun hashCode(): Int {
-        var result = bangumi_id.hashCode()
-        result = 31 * result + id.hashCode()
-        return result
+    override fun areContentsTheSame(other: EntityWithId): Boolean {
+        return when (other) {
+            !is Episode -> false
+            else -> watch_progress == other.watch_progress && thumbnail == other.thumbnail && name == other.name
+        }
     }
 }

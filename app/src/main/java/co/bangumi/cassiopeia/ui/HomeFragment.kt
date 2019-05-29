@@ -11,9 +11,10 @@ import co.bangumi.cassiopeia.R
 import co.bangumi.cassiopeia.databinding.FragmentHomeBinding
 import co.bangumi.cassiopeia.viewmodel.HomeViewModel
 import co.bangumi.common.annotation.RAW
+import co.bangumi.common.model.entity.Bangumi
 import co.bangumi.common.utils.ImageUtil
 import co.bangumi.common.utils.StringUtil
-import co.bangumi.common.utils.helper.setUpWithBangumi
+import co.bangumi.common.utils.helper.setUpWithEntityWithId
 import co.bangumi.framework.base.BaseFragment
 import co.bangumi.framework.util.helper.request
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,7 +42,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setUpRecommended() {
         mBinding.listRecommended.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter =
-            mBinding.listRecommended.setUpWithBangumi(::LargeCardHolder, R.layout.item_bangumi_large) { _, item ->
+            mBinding.listRecommended.setUpWithEntityWithId<Bangumi, LargeCardHolder>(
+                ::LargeCardHolder,
+                R.layout.item_bangumi_large
+            ) { _, item ->
                 ImageUtil.loadImage(this@HomeFragment, image, item.cover_image.url, item.cover_color)
                 title.text = item.localName
                 subtitle.text = item.summary
@@ -63,7 +67,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setUpWatching() {
         mBinding.listWatching.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter =
-            mBinding.listWatching.setUpWithBangumi(::MediumCardHolder, R.layout.item_bangumi_medium) { _, item ->
+            mBinding.listWatching.setUpWithEntityWithId<Bangumi, MediumCardHolder>(
+                ::MediumCardHolder,
+                R.layout.item_bangumi_medium
+            ) { _, item ->
                 ImageUtil.loadImage(this@HomeFragment, image, item)
                 title.text = item.localName
                 new.text = getString(R.string.unwatched).format(item.unwatched_count)
@@ -83,7 +90,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setUpReleasing() {
         mBinding.listReleasing.layoutManager = LinearLayoutManager(context)
-        val adapter = mBinding.listReleasing.setUpWithBangumi(::WideCardHolder, R.layout.item_bangumi_wide) { _, item ->
+        val adapter = mBinding.listReleasing.setUpWithEntityWithId<Bangumi, WideCardHolder>(
+            ::WideCardHolder,
+            R.layout.item_bangumi_wide
+        ) { _, item ->
             ImageUtil.loadImage(this@HomeFragment, image, item)
             title.text = item.localName
             subtitle.text = item.subTitle

@@ -6,43 +6,42 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import co.bangumi.common.model.entity.Bangumi
-import co.bangumi.common.model.entity.Episode
+import co.bangumi.common.model.entity.EntityWithId
 
-inline fun <VH : RecyclerView.ViewHolder> RecyclerView.setUpWithBangumi(
+inline fun <T : EntityWithId, VH : RecyclerView.ViewHolder> RecyclerView.setUpWithEntityWithId(
     crossinline createViewHolder: (view: View) -> VH,
     layoutID: Int,
-    crossinline bind: VH.(index: Int, item: Bangumi) -> Unit
-): ListAdapter<Bangumi, VH> {
+    crossinline bind: VH.(index: Int, item: T) -> Unit
+): ListAdapter<T, VH> {
     return setUp(
         createViewHolder,
         layoutID,
-        object : DiffUtil.ItemCallback<Bangumi>() {
-            override fun areItemsTheSame(oldItem: Bangumi, newItem: Bangumi): Boolean {
-                return oldItem.id === newItem.id
+        object : DiffUtil.ItemCallback<T>() {
+            override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+                return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Bangumi, newItem: Bangumi): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+                return oldItem.areContentsTheSame(newItem)
             }
         }, bind
     )
 }
 
-inline fun RecyclerView.setUpWithBangumiEpisode(
+inline fun <T : EntityWithId> RecyclerView.setUpWithEntityWithId(
     layoutID: Int,
-    crossinline bind: RecyclerView.ViewHolder.(index: Int, item: Episode) -> Unit
-): ListAdapter<Episode, RecyclerView.ViewHolder> {
+    crossinline bind: RecyclerView.ViewHolder.(index: Int, item: T) -> Unit
+): ListAdapter<T, RecyclerView.ViewHolder> {
     return setUp(
         { view -> object : RecyclerView.ViewHolder(view) {} },
         layoutID,
-        object : DiffUtil.ItemCallback<Episode>() {
-            override fun areItemsTheSame(oldItem: Episode, newItem: Episode): Boolean {
-                return oldItem.id === newItem.id
+        object : DiffUtil.ItemCallback<T>() {
+            override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
+                return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Episode, newItem: Episode): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
+                return oldItem.areContentsTheSame(newItem)
             }
         },
         bind

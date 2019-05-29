@@ -8,7 +8,7 @@ import java.util.*
 
 @Parcelize
 data class Bangumi(
-    val id: String,
+    override val id: String,
     val name: String,
     val name_cn: String,
     val image: String,
@@ -25,7 +25,7 @@ data class Bangumi(
     val unwatched_count: Int,
     val update_time: Long,
     val bgm_id: Long
-) : Parcelable {
+) : EntityWithId(), Parcelable {
 
     val localName: String
         get() {
@@ -45,17 +45,6 @@ data class Bangumi(
             }
         }
 
-    override fun hashCode(): Int {
-        return id.hashCode()
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (other is Bangumi) {
-            return id == other.id
-        }
-        return false
-    }
-
     fun isOnAir(): Boolean {
         val airDate = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN).parse(air_date)
         val calendar = Calendar.getInstance(Locale.JAPAN)
@@ -63,5 +52,12 @@ data class Bangumi(
         calendar.time = airDate
         calendar.add(Calendar.WEEK_OF_YEAR, eps)
         return rightNow.before(calendar.time)
+    }
+
+    override fun areContentsTheSame(other: EntityWithId): Boolean {
+        return when (other) {
+            !is Bangumi -> false
+            else -> unwatched_count == other.unwatched_count && favorite_status == other.favorite_status
+        }
     }
 }
