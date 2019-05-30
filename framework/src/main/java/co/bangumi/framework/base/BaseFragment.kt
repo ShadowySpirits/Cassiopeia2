@@ -9,8 +9,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import co.bangumi.framework.annotation.AllOpen
 import co.bangumi.framework.annotation.SUCCESS
-import co.bangumi.framework.util.helper.dispatchFailure
-import co.bangumi.framework.util.helper.toast
+import co.bangumi.framework.util.extension.dispatchFailure
+import co.bangumi.framework.util.extension.toast
 
 @AllOpen
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), BasePresenter {

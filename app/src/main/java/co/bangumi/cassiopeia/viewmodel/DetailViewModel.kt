@@ -5,7 +5,7 @@ import co.bangumi.common.model.entity.BangumiDetail
 import co.bangumi.common.network.FavoriteChangeRequest
 import co.bangumi.framework.base.BaseViewModel
 import co.bangumi.framework.network.MessageResponse
-import co.bangumi.framework.util.helper.requestAsync
+import co.bangumi.framework.util.extension.requestAsync
 import kotlinx.coroutines.Deferred
 
 class DetailViewModel(private val repo: DataRepository) : BaseViewModel() {

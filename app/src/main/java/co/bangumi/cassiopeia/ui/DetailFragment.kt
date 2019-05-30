@@ -12,22 +12,19 @@ import androidx.recyclerview.widget.RecyclerView
 import co.bangumi.cassiopeia.R
 import co.bangumi.cassiopeia.databinding.FragmentDetailBinding
 import co.bangumi.cassiopeia.viewmodel.DetailViewModel
-import co.bangumi.common.Constants.Companion.BGM_DETAIL
-import co.bangumi.common.Constants.Companion.DETAIL_URL_PREFIX
-import co.bangumi.common.Constants.Companion.DYNAMIC_LINK_PREFIX
+import co.bangumi.common.BGM_DETAIL
+import co.bangumi.common.DETAIL_URL_PREFIX
+import co.bangumi.common.DYNAMIC_LINK_PREFIX
 import co.bangumi.common.annotation.*
 import co.bangumi.common.model.entity.Bangumi
 import co.bangumi.common.model.entity.Episode
 import co.bangumi.common.network.FavoriteChangeRequest
-import co.bangumi.common.utils.ImageUtil
-import co.bangumi.common.utils.StringUtil
-import co.bangumi.common.utils.helper.adaptWidth
-import co.bangumi.common.utils.helper.setUpWithEntityWithId
+import co.bangumi.common.utils.dayOfWeek
+import co.bangumi.common.utils.extension.setUp
+import co.bangumi.common.utils.loadImage
 import co.bangumi.framework.base.BaseFragment
-import co.bangumi.framework.util.PackageUtil
-import co.bangumi.framework.util.helper.dispatchFailure
-import co.bangumi.framework.util.helper.request
-import co.bangumi.framework.util.helper.toastError
+import co.bangumi.framework.util.extension.*
+import co.bangumi.framework.util.getVersionCode
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.dynamiclinks.DynamicLink
@@ -63,11 +60,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
 
         val bangumi = args.bangumi
         mBinding.toolbar.title = bangumi.localName
-        ImageUtil.loadImage(this, mBinding.image, bangumi)
+        loadImage(this, mBinding.image, bangumi)
         mBinding.subtitle.text = bangumi.subTitle
         mBinding.info.text = getString(R.string.update_info)
             .format(
-                bangumi.eps, bangumi.air_weekday.let { StringUtil.dayOfWeek(it) },
+                bangumi.eps, dayOfWeek(bangumi.air_weekday),
                 if (bangumi.isOnAir()) getString(R.string.on_air) else getString(R.string.finished)
             )
         if (bangumi.type == RAW) {
@@ -87,8 +84,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         }
 
         mBinding.episodeList.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        listAdapter = mBinding.episodeList.setUpWithEntityWithId(R.layout.item_episode) { _, item ->
-            ImageUtil.loadImage(
+        listAdapter = mBinding.episodeList.setUp(R.layout.item_episode) { _, item ->
+            loadImage(
                 this@DetailFragment,
                 itemView.image,
                 item.thumbnail,
@@ -131,7 +128,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
                     .setDomainUriPrefix(DYNAMIC_LINK_PREFIX)
                     .setAndroidParameters(
                         DynamicLink.AndroidParameters.Builder(homeActivity.packageName)
-                            .setMinimumVersion(PackageUtil.getVersionCode(homeActivity))
+                            .setMinimumVersion(getVersionCode(homeActivity))
                             .build()
                     )
                     .setSocialMetaTagParameters(
@@ -210,7 +207,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         } else {
             mBinding.collectionStatusText.text = array[position]
         }
-        request(
+        requestAsync(
             { mViewModel.uploadFavoriteStatusAsync(args.bangumi.id, FavoriteChangeRequest(position)) },
             { args.bangumi.favorite_status = position },
             {

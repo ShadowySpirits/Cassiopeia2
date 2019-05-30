@@ -1,4 +1,4 @@
-package co.bangumi.framework.util.helper
+package co.bangumi.framework.util.extension
 
 import android.app.Activity
 import android.widget.Toast

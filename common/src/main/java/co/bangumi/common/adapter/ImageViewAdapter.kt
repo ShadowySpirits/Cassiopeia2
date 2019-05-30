@@ -2,9 +2,9 @@ package co.bangumi.common.adapter
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import co.bangumi.common.utils.ImageUtil
+import co.bangumi.common.utils.loadImage
 
 @BindingAdapter("bind:imageUrl", "bind:coverColor")
 fun setImageUrl(view: ImageView, imageUrl: String, coverColor: String) {
-    ImageUtil.loadImage(view.context, view, imageUrl, coverColor)
+    loadImage(view.context, view, imageUrl, coverColor)
 }

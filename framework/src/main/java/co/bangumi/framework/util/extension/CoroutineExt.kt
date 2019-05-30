@@ -1,4 +1,4 @@
-package co.bangumi.framework.util.helper
+package co.bangumi.framework.util.extension
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -8,7 +8,7 @@ import co.bangumi.framework.base.BaseActivity
 import co.bangumi.framework.base.BaseFragment
 import kotlinx.coroutines.*
 
-inline fun <T> BaseActivity<*>.request(
+inline fun <T> BaseActivity<*>.loadDataAsync(
     crossinline block: suspend () -> Deferred<T>,
     crossinline onSuccess: (response: T) -> Unit
 ) {
@@ -21,22 +21,22 @@ inline fun <T> BaseActivity<*>.request(
     }
 }
 
-inline fun <T> BaseActivity<*>.bundledRequests(
+inline fun <T> BaseActivity<*>.loadDataBundleAsync(
     vararg blocks: suspend () -> Deferred<T>,
-    crossinline onComplete: (response: List<T>) -> Unit
+    crossinline onComplete: () -> Unit
 ) {
     lifecycleScope.launch {
-        with(CoroutineScope(coroutineContext + SupervisorJob())) {
-            try {
-                onComplete(blocks.map { it() }.awaitAll())
-            } catch (e: Throwable) {
-                dispatchFailure(e)
-            }
+        try {
+            blocks.map { it() }.awaitAll()
+        } catch (e: Throwable) {
+            dispatchFailure(e)
+        } finally {
+            onComplete()
         }
     }
 }
 
-inline fun <T> BaseFragment<*>.request(
+inline fun <T> BaseFragment<*>.loadDataAsync(
     crossinline block: suspend () -> Deferred<T>,
     crossinline onSuccess: (response: T) -> Unit
 ) {
@@ -49,16 +49,51 @@ inline fun <T> BaseFragment<*>.request(
     }
 }
 
-inline fun <T> LifecycleOwner.request(
+inline fun <T> BaseFragment<*>.loadDataBundleAsync(
+    vararg blocks: suspend () -> Deferred<T>,
+    crossinline onComplete: () -> Unit
+) {
+    lifecycleScope.launch {
+        try {
+            blocks.map { it() }.awaitAll()
+        } catch (e: Throwable) {
+            activity?.dispatchFailure(e)
+        } finally {
+            onComplete()
+        }
+    }
+}
+
+inline fun <T> LifecycleOwner.requestAsync(
     crossinline block: suspend () -> Deferred<T>,
-    crossinline onSuccess: (response: T) -> Unit,
-    crossinline onFailure: (e: Throwable) -> Unit
+    crossinline onSuccess: (response: T) -> Unit = {},
+    crossinline onError: (e: Throwable) -> Unit = {},
+    crossinline onComplete: () -> Unit = {}
 ) {
     lifecycleScope.launch {
         try {
             onSuccess(block().await())
         } catch (e: Throwable) {
-            onFailure(e)
+            onError(e)
+        } finally {
+            onComplete()
+        }
+    }
+}
+
+inline fun <T> LifecycleOwner.requestBundleAsync(
+    vararg blocks: suspend () -> Deferred<T>,
+    crossinline onAllSuccess: (response: List<T>) -> Unit = {},
+    crossinline onError: (e: Throwable) -> Unit = {},
+    crossinline onComplete: () -> Unit = {}
+) {
+    lifecycleScope.launch {
+        try {
+            onAllSuccess(blocks.map { it() }.awaitAll())
+        } catch (e: Throwable) {
+            onError(e)
+        } finally {
+            onComplete()
         }
     }
 }
@@ -77,34 +112,5 @@ inline fun <T> ViewModel.requestAsync(
 ): Deferred<T> {
     return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
         block()
-    }
-}
-
-@Suppress("DeferredResultUnused")
-inline fun <T> ViewModel.requestsAsync(
-    vararg blocks: suspend () -> T,
-    crossinline onComplete: (response: T) -> Unit
-): Deferred<Unit> {
-    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        with(CoroutineScope(coroutineContext + SupervisorJob())) {
-            blocks.forEach {
-                async {
-                    onComplete(it())
-                }
-            }
-        }
-    }
-}
-
-@Suppress("DeferredResultUnused")
-fun <T> ViewModel.requestsAsync(
-    vararg blocks: suspend () -> T
-): Deferred<Unit> {
-    return viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-        with(CoroutineScope(coroutineContext + SupervisorJob())) {
-            blocks.forEach {
-                async { it() }
-            }
-        }
     }
 }

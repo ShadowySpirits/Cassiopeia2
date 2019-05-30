@@ -6,7 +6,7 @@ import co.bangumi.common.annotation.RECOMMENDATION
 import co.bangumi.common.annotation.WATCHING
 import co.bangumi.common.model.entity.Bangumi
 import co.bangumi.framework.base.BaseViewModel
-import co.bangumi.framework.util.helper.requestAsync
+import co.bangumi.framework.util.extension.requestAsync
 import kotlinx.coroutines.Deferred
 
 class HomeViewModel(private val repo: DataRepository) : BaseViewModel() {

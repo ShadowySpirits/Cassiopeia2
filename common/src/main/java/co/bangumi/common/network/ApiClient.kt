@@ -1,7 +1,7 @@
 package co.bangumi.common.network
 
 import android.content.Context
-import co.bangumi.common.Constants
+import co.bangumi.common.BASE_URL
 import co.bangumi.framework.network.NetInterceptor
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache
@@ -19,7 +19,7 @@ object ApiClient {
     fun init(context: Context) {
         apiService ?: synchronized(ApiClient::javaClass) {
             apiService =
-                create(context, Constants.BASE_URL)
+                create(context, BASE_URL)
         }
     }
 

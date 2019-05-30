@@ -66,7 +66,7 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putObject(k: String, v: Any) {
-        val json = JsonUtil.toJson(v)
+        val json = toJson(v)
         preferences.edit {
             putString("Object$k", json)
         }
@@ -77,7 +77,7 @@ class PreferenceUtil private constructor(context: Context) {
         if (TextUtils.isEmpty(json)) return null
         var output: T? = null
         try {
-            output = JsonUtil.fromJson(json!!, classOfT)
+            output = fromJson(json!!, classOfT)
         } catch (ignored: JsonParseException) {
         }
 
@@ -85,7 +85,7 @@ class PreferenceUtil private constructor(context: Context) {
     }
 
     fun putObject(k: String, src: List<*>) {
-        val json = JsonUtil.toJson(src)
+        val json = toJson(src)
         preferences.edit {
             putString("List$k", json)
         }
@@ -96,7 +96,7 @@ class PreferenceUtil private constructor(context: Context) {
         if (TextUtils.isEmpty(json)) return null
         var output: T? = null
         try {
-            output = JsonUtil.fromJson<T>(json!!, typeToken)
+            output = fromJson<T>(json!!, typeToken)
         } catch (ignored: JsonParseException) {
         }
 

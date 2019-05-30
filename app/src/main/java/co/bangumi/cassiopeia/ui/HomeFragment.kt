@@ -12,11 +12,12 @@ import co.bangumi.cassiopeia.databinding.FragmentHomeBinding
 import co.bangumi.cassiopeia.viewmodel.HomeViewModel
 import co.bangumi.common.annotation.RAW
 import co.bangumi.common.model.entity.Bangumi
-import co.bangumi.common.utils.ImageUtil
-import co.bangumi.common.utils.StringUtil
-import co.bangumi.common.utils.helper.setUpWithEntityWithId
+import co.bangumi.common.utils.dayOfWeek
+import co.bangumi.common.utils.extension.setUpWithViewHolder
+import co.bangumi.common.utils.loadImage
 import co.bangumi.framework.base.BaseFragment
-import co.bangumi.framework.util.helper.request
+import co.bangumi.framework.util.extension.loadDataBundleAsync
+import kotlinx.android.synthetic.main.activity_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -42,11 +43,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setUpRecommended() {
         mBinding.listRecommended.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter =
-            mBinding.listRecommended.setUpWithEntityWithId<Bangumi, LargeCardHolder>(
+            mBinding.listRecommended.setUpWithViewHolder<Bangumi, LargeCardHolder>(
                 ::LargeCardHolder,
                 R.layout.item_bangumi_large
             ) { _, item ->
-                ImageUtil.loadImage(this@HomeFragment, image, item.cover_image.url, item.cover_color)
+                loadImage(this@HomeFragment, image, item.cover_image.url, item.cover_color)
                 title.text = item.localName
                 subtitle.text = item.summary
                 eps.text = getString(R.string.eps_all).format(item.eps)
@@ -67,11 +68,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun setUpWatching() {
         mBinding.listWatching.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter =
-            mBinding.listWatching.setUpWithEntityWithId<Bangumi, MediumCardHolder>(
+            mBinding.listWatching.setUpWithViewHolder<Bangumi, MediumCardHolder>(
                 ::MediumCardHolder,
                 R.layout.item_bangumi_medium
             ) { _, item ->
-                ImageUtil.loadImage(this@HomeFragment, image, item)
+                loadImage(this@HomeFragment, image, item)
                 title.text = item.localName
                 new.text = getString(R.string.unwatched).format(item.unwatched_count)
                 itemView.setOnClickListener {
@@ -90,16 +91,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setUpReleasing() {
         mBinding.listReleasing.layoutManager = LinearLayoutManager(context)
-        val adapter = mBinding.listReleasing.setUpWithEntityWithId<Bangumi, WideCardHolder>(
+        val adapter = mBinding.listReleasing.setUpWithViewHolder<Bangumi, WideCardHolder>(
             ::WideCardHolder,
             R.layout.item_bangumi_wide
         ) { _, item ->
-            ImageUtil.loadImage(this@HomeFragment, image, item)
+            loadImage(this@HomeFragment, image, item)
             title.text = item.localName
             subtitle.text = item.subTitle
             info.text = getString(R.string.update_info)
                 .format(
-                    item.eps, item.air_weekday.let { StringUtil.dayOfWeek(it) },
+                    item.eps, dayOfWeek(item.air_weekday),
                     if (item.isOnAir()) getString(R.string.on_air) else getString(R.string.finished)
                 )
             if (item.favorite_status > 0) {
@@ -132,19 +133,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    private fun finishRefresh() {
-        mBinding.swipeRefresh.isRefreshing = false
-    }
-
     override fun loadData(isRefresh: Boolean) {
         mBinding.swipeRefresh.isRefreshing = true
-        request(mViewModel::getAnnounceBangumiAsync, { finishRefresh() }, { finishRefresh() })
-        request(mViewModel::getMyBangumiAsync) {
-            finishRefresh()
-        }
-        request(mViewModel::getOnAirAsync) {
-            finishRefresh()
-        }
+        loadDataBundleAsync(
+            mViewModel::getAnnounceBangumiAsync,
+            mViewModel::getMyBangumiAsync,
+            mViewModel::getOnAirAsync
+        ) { mBinding.swipeRefresh.isRefreshing = false }
     }
 
     override fun onDebouncedClick(view: View) {}

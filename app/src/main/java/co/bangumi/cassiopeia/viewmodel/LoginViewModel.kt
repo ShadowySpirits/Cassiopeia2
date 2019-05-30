@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import co.bangumi.cassiopeia.repository.DataRepository
 import co.bangumi.framework.base.BaseViewModel
 import co.bangumi.framework.network.MessageResponse
-import co.bangumi.framework.util.helper.requestAsync
+import co.bangumi.framework.util.extension.requestAsync
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 

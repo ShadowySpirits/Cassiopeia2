@@ -6,11 +6,11 @@ import androidx.core.os.bundleOf
 import co.bangumi.cassiopeia.R
 import co.bangumi.cassiopeia.databinding.ActivityLoginBinding
 import co.bangumi.cassiopeia.viewmodel.LoginViewModel
-import co.bangumi.common.utils.ConfigureUtil
+import co.bangumi.common.utils.setUsername
 import co.bangumi.framework.base.BaseActivity
 import co.bangumi.framework.network.MessageResponse
-import co.bangumi.framework.util.JsonUtil
-import co.bangumi.framework.util.helper.*
+import co.bangumi.framework.util.convertErrorBody
+import co.bangumi.framework.util.extension.*
 import com.google.firebase.analytics.FirebaseAnalytics
 import org.jetbrains.anko.startActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -44,11 +44,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     override fun onDebouncedClick(view: View) {
         if (mBinding.user.check("账号不能为空") and mBinding.pw.check("密码不能为空")) {
             toastInfo(getString(R.string.connecting))
-            request(mViewModel::loginAsync) {
+            loadDataAsync(mViewModel::loginAsync) {
                 if (it.isSuccessful) {
                     toastSuccess(it.body()?.message())
-                    ConfigureUtil.setUsername(mBinding.user.text.toString())
-                    FirebaseAnalytics.getInstance(this@LoginActivity)
+                    setUsername(mBinding.user.text.toString())
+                    FirebaseAnalytics.getInstance(this)
                         .logEvent(
                             FirebaseAnalytics.Event.LOGIN,
                             bundleOf(FirebaseAnalytics.Param.METHOD to "origin")
@@ -56,7 +56,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     startActivity<HomeActivity>()
                     finish()
                 } else {
-                    toastError(JsonUtil.convertErrorBody(it, MessageResponse::class.java)?.message())
+                    toastError(convertErrorBody(it, MessageResponse::class.java)?.message())
                 }
             }
         }

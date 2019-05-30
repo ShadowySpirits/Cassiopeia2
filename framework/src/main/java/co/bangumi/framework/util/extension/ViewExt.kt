@@ -1,7 +1,9 @@
-package co.bangumi.framework.util.helper
+package co.bangumi.framework.util.extension
 
 import android.text.Editable
 import android.widget.EditText
+import android.widget.TextView
+import kotlin.math.roundToInt
 
 fun EditText.check(msg: String): Boolean {
     this.apply {
@@ -21,4 +23,10 @@ fun EditText.check(msg: String, check: (text: Editable?) -> Boolean): Boolean {
         }
     }
     return true
+}
+
+fun TextView.adaptWidth() {
+    val params = layoutParams
+    params.width = paint.measureText(text.toString()).roundToInt() + paddingLeft + paddingRight
+    layoutParams = params
 }
