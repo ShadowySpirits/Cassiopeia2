@@ -16,7 +16,8 @@ import co.bangumi.common.BGM_DETAIL
 import co.bangumi.common.DETAIL_URL_PREFIX
 import co.bangumi.common.DYNAMIC_LINK_PREFIX
 import co.bangumi.common.annotation.*
-import co.bangumi.common.model.entity.Bangumi
+import co.bangumi.common.model.entity.AbstractBangumi
+import co.bangumi.common.model.entity.BangumiDetail
 import co.bangumi.common.model.entity.Episode
 import co.bangumi.common.network.FavoriteChangeRequest
 import co.bangumi.common.utils.dayOfWeek
@@ -154,7 +155,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         }
     }
 
-    private fun less(bangumi: Bangumi) {
+    private fun less(bangumi: AbstractBangumi) {
         mBinding.summary.text = bangumi.summary.replace("\n", "\t")
         mBinding.summary.maxLines = 1
         mBinding.summary.post {
@@ -164,7 +165,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
         mBinding.btnMore.tag = 1
     }
 
-    private fun more(bangumi: Bangumi) {
+    private fun more(bangumi: AbstractBangumi) {
         mBinding.summary.text = bangumi.summary
         mBinding.summary2.text = ""
         mBinding.summary.maxLines = 20
@@ -222,7 +223,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
     }
 
     override fun loadData(isRefresh: Boolean) {
-        request({ mViewModel.getBangumiDetailAsync(args.bangumi.id) }) {
+        (args.bangumi as? BangumiDetail)?.let {
+            listAdapter.submitList(it.episodes)
+            return
+        }
+        loadDataAsync({ mViewModel.getBangumiDetailAsync(args.bangumi.id) }) {
             listAdapter.submitList(it.episodes)
         }
     }
@@ -238,10 +243,5 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(), OnMenuItemClickLis
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        homeActivity.toolbar.visibility = View.VISIBLE
     }
 }

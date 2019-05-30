@@ -23,8 +23,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private val mViewModel: HomeViewModel by viewModel()
+    private val homeActivity: HomeActivity by lazy { activity as HomeActivity }
 
     override fun getLayoutId(): Int = R.layout.fragment_home
+
+    override fun onStart() {
+        super.onStart()
+        homeActivity.toolbar.visibility = View.VISIBLE
+    }
 
     override fun initView() {
         isLoadOnce = true

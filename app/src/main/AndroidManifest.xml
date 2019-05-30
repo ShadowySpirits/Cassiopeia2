@@ -24,7 +24,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.HomeActivity"
-            android:label="@string/title_activity_home" />
+            android:label="@string/title_activity_home"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.LoginActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -36,6 +37,26 @@
 
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="bangumi.co"
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="cygnus.page.link"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
     </application>

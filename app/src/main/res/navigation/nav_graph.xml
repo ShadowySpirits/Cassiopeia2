@@ -29,7 +29,7 @@
         android:name="co.bangumi.cassiopeia.ui.DetailFragment">
         <argument
             android:name="bangumi"
-            app:argType="co.bangumi.common.model.entity.Bangumi" />
+            app:argType="co.bangumi.common.model.entity.AbstractBangumi" />
     </fragment>
     <fragment
         android:id="@+id/allBangumiFragment"
@@ -53,4 +53,7 @@
             app:destination="@id/detailFragment"
             app:enterAnim="@anim/slide_in_bottom" />
     </fragment>
+    <action
+        android:id="@+id/action_to_detailFragment"
+        app:destination="@id/detailFragment" />
 </navigation>

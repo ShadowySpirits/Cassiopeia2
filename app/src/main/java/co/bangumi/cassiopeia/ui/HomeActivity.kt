@@ -1,13 +1,18 @@
 package co.bangumi.cassiopeia.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
+import co.bangumi.cassiopeia.INTENT_KEY_BGM_DETAIL
+import co.bangumi.cassiopeia.NavGraphDirections
 import co.bangumi.cassiopeia.R
+import co.bangumi.common.model.entity.BangumiDetail
 import co.bangumi.common.network.ApiClient
 import co.bangumi.framework.util.PreferenceUtil
+import co.bangumi.framework.util.extension.argument
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.appindexing.FirebaseAppIndex
 import kotlinx.android.synthetic.main.activity_home.*
@@ -33,6 +38,18 @@ class HomeActivity : AppCompatActivity() {
                 return@setNavigationItemSelectedListener false
             }
             it.onNavDestinationSelected(navController)
+        }
+        argument<BangumiDetail>(INTENT_KEY_BGM_DETAIL)?.let {
+            navController.navigate(NavGraphDirections.actionToDetailFragment(it))
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.extras?.let {
+            (it[INTENT_KEY_BGM_DETAIL] as? BangumiDetail)?.let {
+                navController.navigate(NavGraphDirections.actionToDetailFragment(it))
+            }
         }
     }
 

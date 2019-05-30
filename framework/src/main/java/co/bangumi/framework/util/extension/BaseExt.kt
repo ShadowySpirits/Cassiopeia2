@@ -61,5 +61,5 @@ fun Activity.toastFailure(error: Throwable?) {
 fun <T> Activity.argument(key: String) =
     intent.extras?.let {
         it[key] as T
-    } ?: error("Intent Argument $key is missing")
+    }
 

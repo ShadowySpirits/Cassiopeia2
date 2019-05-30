@@ -1,58 +1,27 @@
 package co.bangumi.common.model.entity
 
-import android.os.Parcelable
-import android.text.TextUtils
 import kotlinx.android.parcel.Parcelize
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Parcelize
 data class Bangumi(
     override val id: String,
-    val name: String,
-    val name_cn: String,
-    val image: String,
-    val cover: String?,
-    val cover_image: CoverImage,
-    val cover_color: String,
-    val summary: String,
-    val air_weekday: Int,
-    val air_date: String,
-    val eps: Int,
-    val type: Int,
-    val status: Int,
-    var favorite_status: Int,
-    val unwatched_count: Int,
-    val update_time: Long,
-    val bgm_id: Long
-) : EntityWithId(), Parcelable {
-
-    val localName: String
-        get() {
-            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-                if (!TextUtils.isEmpty(name_cn)) name_cn else name
-            } else {
-                if (TextUtils.isEmpty(name)) name_cn else name
-            }
-        }
-
-    val subTitle: String
-        get() {
-            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-                if (!TextUtils.isEmpty(name)) name else name_cn
-            } else {
-                if (!TextUtils.isEmpty(name)) name_cn else name
-            }
-        }
-
-    fun isOnAir(): Boolean {
-        val airDate = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN).parse(air_date)
-        val calendar = Calendar.getInstance(Locale.JAPAN)
-        val rightNow = calendar.time
-        calendar.time = airDate
-        calendar.add(Calendar.WEEK_OF_YEAR, eps)
-        return rightNow.before(calendar.time)
-    }
+    override val name: String,
+    override val name_cn: String,
+    override val image: String,
+    override val cover: String?,
+    override val cover_image: CoverImage,
+    override val cover_color: String,
+    override val summary: String,
+    override val air_weekday: Int,
+    override val air_date: String,
+    override val eps: Int,
+    override val type: Int,
+    override val status: Int,
+    override var favorite_status: Int,
+    override val unwatched_count: Int,
+    override val update_time: Long,
+    override val bgm_id: Long
+) : AbstractBangumi() {
 
     override fun areContentsTheSame(other: EntityWithId): Boolean {
         return when (other) {

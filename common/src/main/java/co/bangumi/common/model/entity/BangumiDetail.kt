@@ -1,39 +1,39 @@
 package co.bangumi.common.model.entity
 
-import android.text.TextUtils
-import java.util.*
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class BangumiDetail(
-    val air_date: String,
-    val air_weekday: Int,
-    val alert_timeout: Int,
-    val bangumi_moe: String,
-    val bgm_id: Int,
-    val cover: String,
-    val cover_color: String,
-    val cover_image: CoverImage,
+    override val air_date: String,
+    override val air_weekday: Int,
+    override val bgm_id: Long,
+    override val cover: String,
+    override val cover_color: String,
+    override val cover_image: CoverImage,
+    override val eps: Int,
+    override var favorite_status: Int,
+    override val id: String,
+    override val image: String,
+    override val name: String,
+    override val name_cn: String,
+    override val status: Int,
+    override val summary: String,
+    override val type: Int,
+    override val update_time: Long,
+    override val unwatched_count: Int,
     val create_time: Long,
     val created_by_uid: String,
     val episodes: List<Episode>,
-    val eps: Int,
-    val favorite_status: Int,
     val has_favorited_version: Boolean,
-    val id: String,
-    val image: String,
+    val bangumi_moe: String,
     val maintained_by_uid: String,
-    val name: String,
-    val name_cn: String,
-    val status: Int,
-    val summary: String,
-    val type: Int,
-    val update_time: Long
-) {
-    val localName: String
-        get() {
-            return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
-                if (!TextUtils.isEmpty(name_cn)) name_cn else name
-            } else {
-                if (TextUtils.isEmpty(name)) name_cn else name
-            }
+    val alert_timeout: Int
+) : AbstractBangumi() {
+
+    override fun areContentsTheSame(other: EntityWithId): Boolean {
+        return when (other) {
+            !is BangumiDetail -> false
+            else -> unwatched_count == other.unwatched_count && favorite_status == other.favorite_status
         }
+    }
 }

@@ -1,8 +1,11 @@
 package co.bangumi.common.model.entity
 
+import android.os.Parcelable
 import android.text.TextUtils
+import kotlinx.android.parcel.Parcelize
 import java.util.*
 
+@Parcelize
 data class Episode(
     override val id: String,
     val status: Int,
@@ -19,7 +22,7 @@ data class Episode(
     val create_time: Long,
     val duration: String,
     val watch_progress: WatchProgress?
-) : EntityWithId() {
+) : EntityWithId(), Parcelable {
     val localName: String
         get() {
             return if (Locale.getDefault().displayLanguage == Locale.CHINESE.displayLanguage) {
